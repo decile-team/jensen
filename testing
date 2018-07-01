@@ -1,0 +1,83 @@
+// Copyright (C) Rishabh Iyer, John T. Halloran, and Kai Wei
+// Licensed under the Open Software License version 3.0
+// See COPYING or http://opensource.org/licenses/OSL-3.0
+#!/bin/bash
+
+############### jensen build/test functions
+function buildCMTK {
+    # compile jensen binaries
+    CURR=$(pwd)
+    if [ ! -d build ]
+    then
+	echo "Creating build directory $CURR/build"
+	mkdir build
+    fi
+    cd build
+    cmake ..
+    make
+    cd $CURR
+}
+
+function testCMTK {
+    CURR=$(pwd)
+    RESULTSDIR="$CURR/results"
+
+    if [ ! -d $RESULTSDIR ]
+    then
+	echo "Creating results directory $RESULTSDIR"
+	mkdir $RESULTSDIR
+    fi
+
+    CMTKHEADER="src/jensen.h"
+    # check whether DEBUG is defined in jensen header file
+    DEBUG=$(grep -c "\#define DEBUG" $CMTKHEADER)
+    if((DEBUG == 0))
+    then
+	echo "Adding debug flag to jensen.h"
+	sed -i 's/#define CMTK/#define CMTK\n\n#define DEBUG\n/' $CMTKHEADER
+    fi
+
+    if [ ! -d build ]
+    then
+	echo "Error: build directory does not exist, please run build first"
+	exit 1
+    fi
+    # run test suite
+    cd build
+    for t in TestSmoothSVMLoss TestProbitLoss TestLogisticLoss TestLeastSquaresLoss TestHuberSVMLoss
+    do
+	if [ -e $t ]
+	then
+	    echo "Running $t"
+	    ./$t | tee $RESULTSDIR/${t}_output.txt
+	else
+	    echo "Binary $t not available in build, skipping"
+	fi
+    done
+    cd $CURR
+}
+#############################################################
+
+# check number of input arguments
+# assume build is first argument, test is second argument
+if (( "$#" == 2 ))
+then
+    BUILD=$1
+    TEST=$2
+elif (( "$#" == 1 ))
+then
+    BUILD=$1
+else
+    BUILD=0
+    TEST=0
+fi
+
+if ((BUILD))
+then
+    buildCMTK
+fi
+
+if ((TEST))
+then
+    testCMTK
+fi
