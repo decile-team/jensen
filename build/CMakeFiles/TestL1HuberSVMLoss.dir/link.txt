@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++   -O4 -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/TestL1HuberSVMLoss.dir/test/TestL1HuberSVMLoss.cc.o  -o TestL1HuberSVMLoss libjensen.a 

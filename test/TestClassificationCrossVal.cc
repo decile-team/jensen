@@ -36,7 +36,7 @@ int main(int argc, char** argv){
   double average_accuracy = 0;
   double average_squared_accuracy = 0;
   int num_test = 0;
-  
+
   for(int k = 0; k < kfold; k++){
     int ntrain; // number of data items in the training set
     int mtrain; // numFeatures of the training data
@@ -56,7 +56,7 @@ int main(int argc, char** argv){
 
     num_test = ytest.size();
 
-    cout << "Done reading the file, the size of the training set is " << ytrain.size() << 
+    cout << "Done reading the file, the size of the training set is " << ytrain.size() <<
       " and the size of the test set is " << ytest.size() << endl;
 
     if ((method < 0) || (method > 5)){
@@ -103,7 +103,7 @@ int main(int argc, char** argv){
   average_squared_accuracy /= (float)kfold;
 
   cout << kfold << "-fold cross validation classification accuracy "<< accuracy_percentage << " (" << num_test
-       << "test instances), variance=" 
+       << "test instances), variance="
        << average_squared_accuracy -  average_accuracy * average_accuracy << "\n";
   // cout << "The acuracy of the classifier is "<< accuracy_percentage << "("<< accuracy << "/"<< ytest.size()
   //      << ")" << "\n";

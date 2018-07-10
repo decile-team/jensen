@@ -28,7 +28,7 @@ extern int kfold = 1;
 #define L2SSVM 4
 #define L2HSVM 5
 
-extern Arg Arg::Args[]={
+Arg Arg::Args[]={
   Arg("trainFeatureFile", Arg::Req, trainFeatureFile, "the input training feature file",Arg::SINGLE),
   Arg("trainLabelFile", Arg::Req, trainLabelFile, "the input training label file",Arg::SINGLE),
   Arg("testFeatureFile", Arg::Req, testFeatureFile, "the input test feature file",Arg::SINGLE),
@@ -48,7 +48,7 @@ extern Arg Arg::Args[]={
   Arg()
 };
 
-extern string algs[] = {"L1 Logistic Regression", "L2 Logistic Regression", 
+string algs[] = {"L1 Logistic Regression", "L2 Logistic Regression", 
 			"L1 Smooth SVM", "L2 Smooth SVM", "L2 Hinge SVM"};
 
 #endif

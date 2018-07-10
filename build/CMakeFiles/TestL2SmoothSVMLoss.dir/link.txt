@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++   -O4 -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/TestL2SmoothSVMLoss.dir/test/TestL2SmoothSVMLoss.cc.o  -o TestL2SmoothSVMLoss libjensen.a 
