@@ -1,1 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/c++   -O4 -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/TestJmlr.dir/test/TestJmlr.cc.o  -o TestJmlr libjensen.a 
