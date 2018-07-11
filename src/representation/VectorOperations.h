@@ -17,6 +17,7 @@ Author: Rishabh Iyer
 #include "DenseFeature.h"
 #include <iostream>
 namespace jensen {
+	double sum(const Vector& x);
 	void vectorAddition(const Vector& x, const Vector& y, Vector& z);	
 	void vectorFeatureAddition(const Vector& x, const SparseFeature& f, Vector& z);
 	void vectorFeatureAddition(const Vector& x, const DenseFeature& f, Vector& z);
