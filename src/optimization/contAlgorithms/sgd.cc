@@ -5,20 +5,20 @@
 
 
  *	Stochastic gradient descent with fixed, input step-size
-	Solves the problem \min_x \phi(x), where \phi is a convex (or continuous) function.
-	Anthor: John Halloran
+ Solves the problem \min_x \phi(x), where \phi is a convex (or continuous) function.
+ Anthor: John Halloran
  *
-	Input: 	Continuous Function: c
-		   	Initial starting point x0
-			Number of training/data instances/samples numSamples
-			step-size parameter (alpha)
-			Number of samples to compute the gradient within an epoch miniBatchSize
-			max number of epochs (maxEval)
-			Tolerance (TOL)
-			Verbosity
+ Input: 	Continuous Function: c
+ Initial starting point x0
+ Number of training/data instances/samples numSamples
+ step-size parameter (alpha)
+ Number of samples to compute the gradient within an epoch miniBatchSize
+ max number of epochs (maxEval)
+ Tolerance (TOL)
+ Verbosity
 
-	Output: Output on convergence (x)
- */
+ Output: Output on convergence (x)
+*/
 
 #include <stdio.h>
 #include <algorithm>
@@ -32,67 +32,73 @@ using namespace std;
 
 namespace jensen {
 
-Vector sgd(const ContinuousFunctions& c, const Vector& x0, const int numSamples,
-				 const double alpha, const int miniBatchSize, 
-				 const double TOL, const int maxEval, const int verbosity){
-	cout<<"Started Stochastic Gradient Descent\n";
-	Vector x(x0);
-	double f = 1e30;
-	double f0 = 1e30;
-	Vector g;
-	double gnorm;
-	int epoch = 1;
-	int startInd = 0;
-	int endInd = 0;
-	// number of minibatches
-	// int l = int( float(numSamples) / float(miniBatchSize) + 0.5);
-	int l = numSamples / miniBatchSize;
+  Vector sgd(const ContinuousFunctions& c, const Vector& x0, const int numSamples,
+	     const double alpha, const int miniBatchSize, 
+	     const double TOL, const int maxEval, const int verbosity){
+    cout<<"Started Stochastic Gradient Descent\n";
+    Vector x(x0);
+    double f = 1e30;
+    double f0 = 1e30;
+    Vector g, g2(x0);
+    int gnormType = 1; // use L1 norm, set to 2 if L2 is desired
+    double gnorm;
+    int epoch = 1;
+    int startInd = 0;
+    int endInd = 0;
+    // number of minibatches
+    int l = numSamples / miniBatchSize;
+    double denom = miniBatchSize * numSamples;
 	
-	// create vector of indices and randomly permute
-	std::vector<int> indices;
-	for(int i = 0; i < numSamples; i++){
-	  indices.push_back(i);
-	}
-	std::random_shuffle( indices.begin(), indices.end() );
-	gnorm = 1e2;
-	std::vector <std::vector<int> > allIndices = std::vector <std::vector<int> >(l-1);
-	for (int i = 0; i < l-1; i++){
-	  startInd = i * miniBatchSize;
-	  endInd = min((i+1) * miniBatchSize - 1, numSamples-1);
-	  std::vector<int> currIndices(indices.begin() + startInd, indices.begin() + endInd);
-	  allIndices[i] = currIndices;
-	}
-	while ((gnorm >= TOL) && (epoch < maxEval) )
-	{
-		for(int i = 0; i < l - 1; i++){
-		  // create starting and ending indices to take a subvector of indices
-		  
-		  f0 = f;
-		  c.evalStochastic(x, f, g, 
-				   allIndices[i]);
-		  
-		  multiplyAccumulate(x, alpha, g);
-		  if (verbosity > 1)
-		    printf("Epoch %d, minibatch %d, alpha: %f, ObjVal: %f, OptCond: %f\n", epoch, i, alpha, f, gnorm);
-		}
+    // create vector of indices and randomly permute
+    std::vector<int> indices;
+    for(int i = 0; i < numSamples; i++){
+      indices.push_back(i);
+    }
+    std::random_shuffle( indices.begin(), indices.end() );
+    gnorm = 1e2;
+    std::vector <std::vector<int> > allIndices = std::vector <std::vector<int> >(l-1);
+    for (int i = 0; i < l-1; i++){
+      startInd = i * miniBatchSize;
+      endInd = min((i+1) * miniBatchSize - 1, numSamples-1);
+      std::vector<int> currIndices(indices.begin() + startInd, indices.begin() + endInd);
+      allIndices[i] = currIndices;
+    }
+    while ((gnorm >= TOL) && (epoch < maxEval) )
+      {
+	f0 = 0.0; // calculate average reduction in objective value
+	gnorm = 0.0; // calculate average reduction in the gradient
+	for(int i = 0; i < l - 1; i++){
+	  // create starting and ending indices to take a subvector of indices
+	  g2 = g;
+	  c.evalStochastic(x, f, g, 
+			   allIndices[i]);		  
+	  multiplyAccumulate(x, alpha, g);
+	  f0 += f / denom;
+	  gnorm += norm(g2-g, gnormType) / denom;
 
-		if (verbosity > 1){
-		  // Evaluate total objective function with learned parameters
-		  c.eval(x, f, g);
-		  gnorm = norm(g);
-		  printf("Epoch: %d, alpha: %f, ObjVal: %f, OptCond: %f\n", epoch, alpha, f, gnorm);
-		}else{
-		  gnorm = fabs(f0-f);
-		  printf("Epoch: %d, alpha: %f, ObjVal: %f, OptCond: %f\n", epoch, alpha, f, gnorm);
-		}
-		epoch++;
+	  if (verbosity > 2)
+	    printf("Epoch %d, minibatch %d, alpha: %f, ObjVal: %f, OptCond: %f\n", epoch, i, alpha, f, gnorm);
 	}
-	if (verbosity > 0){
+
+	if (verbosity > 1){
 	  // Evaluate total objective function with learned parameters
 	  c.eval(x, f, g);
 	  gnorm = norm(g);
 	  printf("Epoch: %d, alpha: %f, ObjVal: %f, OptCond: %f\n", epoch, alpha, f, gnorm);
+	} else{
+	  printf("Epoch: %d, alpha: %f, Avg. ObjVal Reduction: %f, Avg. Grad. Reduction: %f\n", epoch, alpha, f0, gnorm);
 	}
-	return x;
-}		
+	epoch++;
+      }
+    if (verbosity > 1){
+      // Evaluate total objective function with learned parameters
+      c.eval(x, f, g);
+      gnorm = norm(g);
+      printf("Epoch: %d, alpha: %f, ObjVal: %f, OptCond: %f\n", epoch, alpha, f, gnorm);
+    } else {
+      printf("Epoch: %d, alpha: %f, Avg. ObjVal Reduction: %f, Avg. Grad. Reduction: %f\n", epoch, alpha, f0, gnorm);
+    }
+
+    return x;
+  }		
 }
