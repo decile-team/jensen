@@ -123,19 +123,18 @@ int main(int argc, char** argv){
 	lbfgsMinOwl(ll, Vector(m, 0), 1, 1e-0, 250, 100, 1e-4);
 
 	cout<<"*******************************************************************\n";
-	cout<<"SGD with L1-regularized Dual-Averaging and AdaGrad for Logistic Loss, press enter to continue...\n";
-	#ifndef DEBUG
-	cin.get();
-	#endif
-	sgdRegularizedDualAveragingAdagrad(ll, l, Vector(m, 0), n, 1e-1, 1e-3, 200, 1e-4, 250);
-
-	cout<<"*******************************************************************\n";
 	cout<<"SGD with L1-regularized Dual-Averaging for Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	sgdRegularizedDualAveraging(ll, l, Vector(m, 0), n, 1e-1, 1e-3, 200, 1e-4, 250, 0.5);
+	sgdRegularizedDualAveraging(l, ll, Vector(m, 0), n, 1e-1, 1e-3, 200, 1e-4, 250, 0.5);
 
+	cout<<"*******************************************************************\n";
+	cout<<"SGD with L1-regularized Dual-Averaging and AdaGrad for Logistic Loss, press enter to continue...\n";
+	#ifndef DEBUG
+	cin.get();
+	#endif
+	sgdRegularizedDualAveragingAdagrad(l, ll, Vector(m, 0), n, 1e-1, 1e-3, 200, 1e-4, 250);
 
 	// cout<<"*******************************************************************\n";
 	// cout<<"Stochastic Gradient Descent with Line Search for L1-Logistic Loss, press enter to continue...\n";

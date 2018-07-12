@@ -40,87 +40,95 @@ namespace jensen {
 					   const int numIter, const double stepSize, 
 					   const double l1Tolerance,
 					   Vector& x)
-{
-  double absG = 0;
+  {
+    double absG = 0;
 
-  x = Vector(g.size(), 0);
-  for (int i = 0; i < g.size(); i++){
-    absG = std::abs(g[i]);
-    if (absG <= l1Tolerance)
-      x[i] = 0;
-    else
-      x[i] = -sign(g[i]) * stepSize * numIter * (absG / numIter - l1Tolerance) / pow(g2[i], 0.5);
+    x = Vector(g.size(), 0);
+    for (int i = 0; i < g.size(); i++){
+      absG = std::abs(g[i]);
+      if (absG <= l1Tolerance)
+	x[i] = 0;
+      else
+	x[i] = -sign(g[i]) * stepSize * numIter * (absG / numIter - l1Tolerance) / pow(g2[i], 0.5);
       // x[i] = -stepSize * numIter / pow(g2[i], 0.5) * (g[i] / double(numIter) - sign(g[i]) * l1Tolerance);
+    }
   }
-}
 
   Vector sgdRegularizedDualAveragingAdagrad(const ContinuousFunctions& c, const ContinuousFunctions& c2, 
 					    const Vector& x0, const int numSamples,
 					    const double alpha, const double lambda,
 					    const int miniBatchSize, 
 					    const double TOL, const int maxEval, const int verbosity){
-	cout<<"Started Stochastic Gradient Descent with AdaGrad\n";
-	Vector x = Vector(x0.size(), 0); // implicit assumption of RDA algorithm
-	double f = 1e30;
-	double f0 = 1e30;
-	Vector g;
-	double gnorm;
-	int epoch = 1;
-	int startInd = 0;
-	int endInd = 0;
-	int miniBatchEval = 1;
-	// number of minibatches
-	int l = numSamples / miniBatchSize;
-	
-	// create vector of indices and randomly permute
-	std::vector<int> indices;
-	for(int i = 0; i < numSamples; i++){
-	  indices.push_back(i);
-	}
-	std::random_shuffle( indices.begin(), indices.end() );
-	gnorm = 1e2;
+    cout<<"Started Stochastic Gradient Descent with AdaGrad\n";
+    Vector x = Vector(x0.size(), 0); // implicit assumption of RDA algorithm
+    double f = 1e30;
+    double f0 = 1e30;
+    Vector g, g2(x0);
+    int gnormType = 1; // use L1 norm, set to 2 if L2 is desired
+    double gnorm = 1e2;
+    int epoch = 1;
+    int startInd = 0;
+    int endInd = 0;
+    int miniBatchEval = 1;
+    // number of minibatches
+    int l = numSamples / miniBatchSize;
+    double denom = miniBatchSize * numSamples;	
 
-	// dual-averaging average sum of gradients
-	Vector gRunningSum(x0.size(), 0); // for feature i at iteration j, \sum_{t = 1}^j g^2_{t,i}
-	// adagrad's running sum of squared gradients
-	Vector g2RunningSum(x0.size(), 1e-5); // for feature i at iteration j, \sum_{t = 1}^j g^2_{t,i}
-	while ((gnorm >= TOL) && (epoch < maxEval) )
-	{
-		for(int i = 0; i < l - 1; i++){
-		  // create starting and ending indices to take a subvector of indices
-		  startInd = i * miniBatchSize;
-		  endInd = min((i+1) * miniBatchSize - 1, numSamples-1);
-		  std::vector<int> currIndices(indices.begin() + startInd, 
-					       indices.begin() + endInd);
-		  f0 = f;
-		  c.evalStochastic(x, f, g, 
-				   currIndices);
+    // create vector of indices and randomly permute
+    std::vector<int> indices;
+    for(int i = 0; i < numSamples; i++){
+      indices.push_back(i);
+    }
+    std::random_shuffle( indices.begin(), indices.end() );
 
-		  gRunningSum += g;
-		  // update running sum of squares of encountered gradients
-		  g2RunningSum += elementMultiplication(g,g);
-		  regularizedDualAverageUpdate(gRunningSum, g2RunningSum, miniBatchEval, alpha, lambda, x);
-		  miniBatchEval++;
-		  if (verbosity > 1)
-		    printf("Epoch %d, minibatch %d, alpha: %f, ObjVal: %f, OptCond: %f\n", epoch, i, alpha, f, gnorm);
-		}
-		if (verbosity > 1){
-		  // Evaluate total objective function with learned parameters
-		  c2.eval(x, f, g);
-		  gnorm = norm(g);
-		  printf("Epoch: %d, alpha: %f, ObjVal: %f, OptCond: %f\n", epoch, alpha, f, gnorm);
-		}else{
-		  gnorm = fabs(f0-f);
-		  printf("Epoch: %d, alpha: %f, ObjVal: %f, OptCond: %f\n", epoch, alpha, f, gnorm);
-		}
-		epoch++;
+    // dual-averaging average sum of gradients
+    Vector gRunningSum(x0.size(), 0); // for feature i at iteration j, \sum_{t = 1}^j g^2_{t,i}
+    // adagrad's running sum of squared gradients
+    Vector g2RunningSum(x0.size(), 1e-5); // for feature i at iteration j, \sum_{t = 1}^j g^2_{t,i}
+    while ((gnorm >= TOL) && (epoch < maxEval) )
+      {
+	f0 = 0.0; // calculate average reduction in objective value
+	gnorm = 0.0; // calculate average reduction in the gradient
+	for(int i = 0; i < l - 1; i++){
+	  g2 = g;
+	  // create starting and ending indices to take a subvector of indices
+	  startInd = i * miniBatchSize;
+	  endInd = min((i+1) * miniBatchSize - 1, numSamples-1);
+	  std::vector<int> currIndices(indices.begin() + startInd, 
+				       indices.begin() + endInd);
+	  c.evalStochastic(x, f, g, 
+			   currIndices);
+
+	  gRunningSum += g;
+	  // update running sum of squares of encountered gradients
+	  g2RunningSum += elementMultiplication(g,g);
+	  regularizedDualAverageUpdate(gRunningSum, g2RunningSum, miniBatchEval, alpha, lambda, x);
+	  miniBatchEval++;
+
+	  f0 += f / denom;
+	  gnorm += norm(g2-g, gnormType) / denom;
+
+	  if (verbosity > 2)
+	    printf("Epoch %d, minibatch %d, alpha: %f, ObjVal: %f, OptCond: %f\n", epoch, i, alpha, f, norm(g));
 	}
-	if (verbosity > 0){
+	if (verbosity > 1){
 	  // Evaluate total objective function with learned parameters
 	  c2.eval(x, f, g);
 	  gnorm = norm(g);
 	  printf("Epoch: %d, alpha: %f, ObjVal: %f, OptCond: %f\n", epoch, alpha, f, gnorm);
+	}else{
+	  printf("Epoch: %d, alpha: %f, Avg. ObjVal Reduction: %f, Avg. Grad. Reduction: %f\n", epoch, alpha, f0, gnorm);
 	}
-	return x;
-}		
+	epoch++;
+      }
+    if (verbosity > 0){
+      // Evaluate total objective function with learned parameters
+      c2.eval(x, f, g);
+      gnorm = norm(g);
+      printf("Epoch: %d, alpha: %f, ObjVal: %f, OptCond: %f\n", epoch, alpha, f, gnorm);
+    } else {
+      printf("Epoch: %d, alpha: %f, Avg. ObjVal Reduction: %f, Avg. Grad. Reduction: %f\n", epoch, alpha, f0, gnorm);
+    }
+    return x;
+  }		
 }
