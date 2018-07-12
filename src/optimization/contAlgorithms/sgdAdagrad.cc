@@ -39,9 +39,9 @@ namespace jensen {
     Vector x(x0);
     double f = 1e30;
     double f0 = 1e30;
-    Vector g, g2(x0);
+    Vector g(x.size(), 0.0), g2(x.size(), 0.0);
     int gnormType = 1; // use L1 norm, set to 2 if L2 is desired
-    double gnorm;
+    double gnorm = 1e2;
     int epoch = 1;
     int startInd = 0;
     int endInd = 0;
@@ -55,7 +55,14 @@ namespace jensen {
       indices.push_back(i);
     }
     std::random_shuffle( indices.begin(), indices.end() );
-    gnorm = 1e2;
+
+    std::vector <std::vector<int> > allIndices = std::vector <std::vector<int> >(l-1);
+    for (int i = 0; i < l-1; i++){
+      startInd = i * miniBatchSize;
+      endInd = min((i+1) * miniBatchSize - 1, numSamples-1);
+      std::vector<int> currIndices(indices.begin() + startInd, indices.begin() + endInd);
+      allIndices[i] = currIndices;
+    }
 
     // adagrad's running some of squared gradients
     Vector g2RunningSum(x0.size(), 1e-5); // for feature i at iteration j, \sum_{t = 1}^j g^2_{t,i}
@@ -64,14 +71,9 @@ namespace jensen {
 	f0 = 0.0; // calculate average reduction in objective value
 	gnorm = 0.0; // calculate average reduction in the gradient
 	for(int i = 0; i < l - 1; i++){
-	  // create starting and ending indices to take a subvector of indices
-	  startInd = i * miniBatchSize;
-	  endInd = min((i+1) * miniBatchSize - 1, numSamples-1);
-	  std::vector<int> currIndices(indices.begin() + startInd, 
-				       indices.begin() + endInd);
 	  g2 = g;
 	  c.evalStochastic(x, f, g, 
-			   currIndices);
+			   allIndices[i]);
 
 	  // // update running sum of squares of encountered gradients
 	  g2RunningSum += elementMultiplication(g,g);
@@ -79,16 +81,16 @@ namespace jensen {
 	  f0 += f / denom;
 	  gnorm += norm(g2-g, gnormType) / denom;
 	  if (verbosity > 2)
-	    printf("Epoch %d, minibatch %d, alpha: %f, ObjVal: %f, OptCond: %f\n", epoch, i, alpha, f, gnorm);
+	    printf("Epoch %d, minibatch %d, alpha: %e, ObjVal: %e, OptCond: %e\n", epoch, i, alpha, f, gnorm);
 	}
 
 	if (verbosity > 1){
 	  // Evaluate total objective function with learned parameters
 	  c.eval(x, f, g);
 	  gnorm = norm(g);
-	  printf("Epoch: %d, alpha: %f, ObjVal: %f, OptCond: %f\n", epoch, alpha, f, gnorm);
+	  printf("Epoch: %d, alpha: %e, ObjVal: %e, OptCond: %e\n", epoch, alpha, f, gnorm);
 	}else{
-	  printf("Epoch: %d, alpha: %f, Avg. ObjVal Reduction: %f, Avg. Grad. Reduction: %f\n", epoch, alpha, f0, gnorm);
+	  printf("Epoch: %d, alpha: %e, Avg. ObjVal Reduction: %e, Avg. Grad. Reduction: %e\n", epoch, alpha, f0, gnorm);
 	}
 	epoch++;
       }
@@ -96,9 +98,9 @@ namespace jensen {
       // Evaluate total objective function with learned parameters
       c.eval(x, f, g);
       gnorm = norm(g);
-      printf("Epoch: %d, alpha: %f, ObjVal: %f, OptCond: %f\n", epoch, alpha, f, gnorm);
+      printf("Epoch: %d, alpha: %e, ObjVal: %e, OptCond: %e\n", epoch, alpha, f, gnorm);
     } else {
-      printf("Epoch: %d, alpha: %f, Avg. ObjVal Reduction: %f, Avg. Grad. Reduction: %f\n", epoch, alpha, f0, gnorm);
+      printf("Epoch: %d, alpha: %e, Avg. ObjVal Reduction: %e, Avg. Grad. Reduction: %e\n", epoch, alpha, f0, gnorm);
     }
 
     return x;

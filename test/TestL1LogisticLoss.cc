@@ -19,6 +19,7 @@ int main(int argc, char** argv){
 	char* labelFile = "../data/20newsgroup.label";
 	int n; // number of data items
 	int m; // numFeatures
+	int numEpochs = 50;
 	bool checkOld = false;
 	vector<struct SparseFeature> features = readFeatureVectorSparse(featureFile, n, m);
 	Vector y = readVector(labelFile, n);
@@ -35,47 +36,47 @@ int main(int argc, char** argv){
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	gd(ll, Vector(m, 0), 1e-5, 250);
+	gd(ll, Vector(m, 0), 1e-5, numEpochs);
 	// cout<<"*******************************************************************\n"
 	// cout<<"Testing Gradient Descent with L1-Logistic Loss\n";
-	// gradientDescent(ss, Vector(m, 0), 1e-8, 250);
+	// gradientDescent(ss, Vector(m, 0), 1e-8, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Testing Gradient Descent with Line Search for L1-Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	gdLineSearch(ll, Vector(m, 0), 1, 1e-4, 250);
-	// gradientDescentLS(ss, Vector(m, 0), 1, 1e-4, 250);
+	gdLineSearch(ll, Vector(m, 0), 1, 1e-4, numEpochs);
+	// gradientDescentLS(ss, Vector(m, 0), 1, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Testing Gradient Descent with Barzilia-Borwein Step Length for L1-Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	gdBarzilaiBorwein(ll, Vector(m, 0), 1, 1e-4, 250);
-	// gradientDescentBB(ss, Vector(m, 0), 1, 1e-4, 250);
+	gdBarzilaiBorwein(ll, Vector(m, 0), 1, 1e-4, numEpochs);
+	// gradientDescentBB(ss, Vector(m, 0), 1, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Testing Nesterov's Method for L1-Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	gdNesterov(ll, Vector(m, 0), 1, 1e-4, 250);
+	gdNesterov(ll, Vector(m, 0), 1, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Testing Conjugate Gradient for L1-Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	cg(ll, Vector(m, 0), 1, 1e-4, 250);
+	cg(ll, Vector(m, 0), 1, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"L-BFGS for L1-Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	lbfgsMin(ll, Vector(m, 0), 1, 1e-4, 250);
+	lbfgsMin(ll, Vector(m, 0), 1, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Testing LibLinear Coordinate Descent Algorithm, press enter to continue\n";
@@ -84,63 +85,49 @@ int main(int argc, char** argv){
 	#endif
 	Vector x;
 	L1LRPrimal(features, y, x, 1, 1e-2);
-	// lbfgsMin(ss, Vector(m, 0), 1, 1e-4, 250);
+	// lbfgsMin(ss, Vector(m, 0), 1, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"L-BFGS-Owl for L1-Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	lbfgsMinOwl(ll, Vector(m, 0), 1, 1e-4, 250);
-	// lbfgsMin(ss, Vector(m, 0), 1, 1e-4, 250);
+	lbfgsMinOwl(ll, Vector(m, 0), 1, 1e-4, numEpochs);
+	// lbfgsMin(ss, Vector(m, 0), 1, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Stochastic Gradient Descent for L1-Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	sgd(ll, Vector(m, 0), n, 1e-4, 100, 1e-4, 250);
+	sgd(ll, Vector(m, 0), n, 1e-4, 100, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Stochastic Gradient Descent with Decaying Learning Rate for L1-Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	sgdDecayingLearningRate(ll, Vector(m, 0), n, 1e-4, 200, 1e-4, 250, 0.6);
+	sgdDecayingLearningRate(ll, Vector(m, 0), n, 1e-4, 200, 1e-4, numEpochs, 0.6);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Stochastic Gradient Descent with AdaGrad for L1-Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	sgdAdagrad(ll, Vector(m, 0), n, 1e-4, 200, 1e-4, 250);
+	sgdAdagrad(ll, Vector(m, 0), n, 1e-4, 200, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"LBFGS with orthant-wise projection for L1-regularized Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	lbfgsMinOwl(ll, Vector(m, 0), 1, 1e-0, 250, 100, 1e-4);
+	lbfgsMinOwl(ll, Vector(m, 0), 1, 1e-0, numEpochs, 100, 1e-4);
 
 	cout<<"*******************************************************************\n";
+
 	cout<<"SGD with L1-regularized Dual-Averaging for Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	sgdRegularizedDualAveraging(l, ll, Vector(m, 0), n, 1e-1, 1e-3, 200, 1e-4, 250, 0.5);
-
-	cout<<"*******************************************************************\n";
-	cout<<"SGD with L1-regularized Dual-Averaging and AdaGrad for Logistic Loss, press enter to continue...\n";
-	#ifndef DEBUG
-	cin.get();
-	#endif
-	sgdRegularizedDualAveragingAdagrad(l, ll, Vector(m, 0), n, 1e-1, 1e-3, 200, 1e-4, 250);
-
-	// cout<<"*******************************************************************\n";
-	// cout<<"Stochastic Gradient Descent with Line Search for L1-Logistic Loss, press enter to continue...\n";
-	// #ifndef DEBUG
-	// cin.get();
-	// #endif
-	// sgdLineSearch(ll, Vector(m, 0), n, 1e-2, 200, 1e-4, 250);
-
+	sgdRegularizedDualAveraging(l, ll, Vector(m, 0), n, 1e-1, 1e-3, 200, 1e-4, numEpochs, 0.5);
 }

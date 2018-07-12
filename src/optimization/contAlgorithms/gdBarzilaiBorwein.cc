@@ -40,7 +40,6 @@ const int maxEval, const double TOL, bool useinputAlpha, int verbosity){
 	double fnew;
 	Vector gnew;
 	double gnorm = norm(g);
-	cout << alpha << "\n";
 	int funcEval = 1;
 	if (!useinputAlpha)
 		alpha = 1/norm(g);

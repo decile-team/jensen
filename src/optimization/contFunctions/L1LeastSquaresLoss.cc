@@ -39,7 +39,7 @@ namespace jensen {
   template <class Feature>
 	double L1LeastSquaresLoss<Feature>::eval(const Vector& x) const{
 		assert(x.size() == m);
-		double sum = norm(x, 1);
+		double sum = lambda * norm(x, 1);
 		for (int i = 0; i < n; i++){
 			sum += (y[i] - (x*features[i]))*(y[i] - (x*features[i]));
 		}

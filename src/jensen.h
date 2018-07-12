@@ -4,7 +4,7 @@
 #ifndef Jensen
 #define Jensen
 
-//#define DEBUG
+#define DEBUG
 
 
 #include <iostream>

@@ -43,7 +43,7 @@ const int maxEval, const double TOL, const int verbosity){
 		funcEval++;
 		gnorm = norm(g);
 		if (verbosity > 0)
-			printf("numIter: %d, alpha: %f, ObjVal: %f, OptCond: %f\n", funcEval, alpha, f, gnorm);
+			printf("numIter: %d, alpha: %e, ObjVal: %e, OptCond: %e\n", funcEval, alpha, f, gnorm);
 	}
 	return x;
 }
