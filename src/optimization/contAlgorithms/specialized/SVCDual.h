@@ -24,7 +24,7 @@
 #include "../../../representation/SparseFeature.h"
 
 namespace jensen {
-	Vector SVCDual(std::vector<SparseFeature>& features, Vector& y, int solver_type, double lambda, double eps, int max_iter);
+  Vector SVCDual(std::vector<SparseFeature>& features, Vector& y, int solver_type, double lambda, double eps, int max_iter,  const int verbosity = 1);
 
 }
 #endif

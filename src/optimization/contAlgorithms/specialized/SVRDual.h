@@ -26,7 +26,7 @@
 
 namespace jensen {
 	
-	Vector SVRDual(std::vector<SparseFeature>& features, Vector& y, int solver_type, double lambda, double p, double eps, int max_iter);
+  Vector SVRDual(std::vector<SparseFeature>& features, Vector& y, int solver_type, double lambda, double p, double eps, int max_iter, const int verbosity = 1);
 
 }
 #endif

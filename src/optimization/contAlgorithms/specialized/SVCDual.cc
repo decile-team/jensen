@@ -36,7 +36,7 @@ using namespace std;
 //#endif
 
 namespace jensen {
-	Vector SVCDual(vector<SparseFeature>& features, Vector& y, int solver_type, double lambda, double eps, int max_iter)
+  Vector SVCDual(vector<SparseFeature>& features, Vector& y, int solver_type, double lambda, double eps, int max_iter, const int verbosity)
 	{
 	int l = features.size(); // number of training examples
 	int w_size = features[0].numFeatures; // dimension of the features
@@ -162,7 +162,7 @@ namespace jensen {
 
 		iter++;
 		if(iter % 10 == 0)
-			printf(".");
+			// printf(".");
 
 		if(PGmax_new - PGmin_new <= eps)
 		{
@@ -171,7 +171,7 @@ namespace jensen {
 			else
 			{
 				active_size = l;
-				printf("*");
+				// printf("*");
 				PGmax_old = INF;
 				PGmin_old = -INF;
 				continue;
@@ -197,10 +197,12 @@ namespace jensen {
 				++nSV;
 		}
 		pval = c->eval(w);
-		printf("Dual Objective value = %lf, Primal Objective Value = %lf, nSV = %d\n",v/2, pval, nSV);
+		// printf("Dual Objective value = %lf, Primal Objective Value = %lf, nSV = %d\n",v/2, pval, nSV);
+		if(verbosity > 0)
+		  printf("numIter: %d, ObjVal: %e, Dual ObjVal: %e, nSV: %e\n", iter, pval, v/2, nSV);
 	}
 
-	printf("\noptimization finished, #iter = %d\n",iter);
+	// printf("\noptimization finished, #iter = %d\n",iter);
 	if (iter >= max_iter)
 		printf("\nWARNING: reaching max number of iterations\nUsing -s 2 may be faster (also see FAQ)\n\n");
 
@@ -216,8 +218,9 @@ namespace jensen {
 		if(alpha[i] > 0)
 			++nSV;
 	}
-	printf("Objective value = %lf\n",v/2);
-	printf("nSV = %d\n",nSV);
+	// printf("Objective value = %lf\n",v/2);
+	// printf("nSV = %d\n",nSV);
+	// printf("\noptimization finished, #iter = %d, Dual ObjVal = %e, nSV = %d\n",iter, v/2, nSV);
 	delete c;
 	return w;
 }

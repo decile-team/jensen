@@ -24,7 +24,7 @@
 
 namespace jensen {
 	
-void L1LRPrimal(std::vector<SparseFeature>& features, Vector& y, Vector& x, double C, double eps);
+  void L1LRPrimal(std::vector<SparseFeature>& features, Vector& y, Vector& x, double C, double eps, const int max_newton_iter = 100, const int verbosity = 1);
 
 }
 #endif

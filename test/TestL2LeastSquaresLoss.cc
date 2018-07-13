@@ -20,6 +20,7 @@ int main(int argc, char** argv){
 	Vector y = readVector(labelFile, n);
 	int numEpochs = 50;
 	L2LeastSquaresLoss<SparseFeature> ll(m, features, y, 1);
+	double stepSize = 1e-4;
 
 	Vector x(m, 1);
 	double f;
@@ -29,7 +30,7 @@ int main(int argc, char** argv){
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	gd(ll, x, 1e-8, numEpochs);
+	gd(ll, x, stepSize, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Testing Gradient Descent with Line Search for Least Squares Loss, press enter to continue...\n";

@@ -31,7 +31,7 @@ using namespace std;
 
 namespace jensen {
 
-	Vector SVRDual(vector<SparseFeature>& features, Vector& y, int solver_type, double lambda, double p, double eps, int max_iter)
+  Vector SVRDual(vector<SparseFeature>& features, Vector& y, int solver_type, double lambda, double p, double eps, int max_iter, const int verbosity)
 	
 	{
 		int l = features.size();
@@ -186,7 +186,7 @@ namespace jensen {
 				Gnorm1_init = Gnorm1_new;
 			iter++;
 			if(iter % 10 == 0)
-				printf(".");
+				// printf(".");
 
 			if(Gnorm1_new <= eps*Gnorm1_init)
 			{
@@ -195,7 +195,7 @@ namespace jensen {
 				else
 				{
 					active_size = l;
-					printf("*");
+					// printf("*");
 					Gmax_old = INF;
 					continue;
 				}
@@ -214,10 +214,13 @@ namespace jensen {
 					nSV++;
 			}
 			pval = c->eval(w);
-			printf("Dual Objective value = %lf, Primal Objective Value = %lf, nSV = %d\n",v/2, pval, nSV);
+			// printf("Dual Objective value = %lf, Primal Objective Value = %lf, nSV = %d\n",v/2, pval, nSV);
+			if(verbosity > 0)
+			  printf("numIter: %d, ObjVal: %e, Dual ObjVal: %e, nSV: %e\n", iter, pval, v/2, nSV);
+
 		}
 
-		printf("\noptimization finished, #iter = %d\n", iter);
+		// printf("\noptimization finished, #iter = %d\n", iter);
 		if(iter >= max_iter)
 			printf("\nWARNING: reaching max number of iterations\nUsing -s 11 may be faster\n\n");
 
@@ -234,8 +237,8 @@ namespace jensen {
 				nSV++;
 		}
 
-		printf("Objective value = %lf\n", v);
-		printf("nSV = %d\n",nSV);
+		// printf("Objective value = %lf\n", v);
+		// printf("nSV = %d\n",nSV);
 		delete c;
 		return w;
 	}

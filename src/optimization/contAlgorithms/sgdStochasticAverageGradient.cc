@@ -85,15 +85,16 @@ namespace jensen {
 
     while ((gnorm >= TOL) && (epoch < maxEval) )
       {
-	randSample = (rand() % (l-1));
-	startInd = randSample * miniBatchSize;
+	for(int i = 0; i < l - 1; i++){
+	  randSample = (rand() % (l-1));
+	  startInd = randSample * miniBatchSize;
 
-	c.evalStochastic(x, f, g, 
-			 allIndices[randSample]);
+	  c.evalStochastic(x, f, g, 
+			   allIndices[randSample]);
 
-	gRunningSum -= (grads[randSample] - g);
-	x = x - (learningRate / l) * gRunningSum;
-
+	  gRunningSum -= (grads[randSample] - g);
+	  x = x - (learningRate / l) * gRunningSum;
+	}
 	grads[startInd] = g;
 	// Evaluate total objective function with learned parameters
 	if (verbosity > 0){

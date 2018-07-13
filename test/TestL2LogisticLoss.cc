@@ -23,7 +23,7 @@ int main(int argc, char** argv){
 	int numEpochs = 50;
 	L2LogisticLoss<SparseFeature> ll(m, features, y, 1);
 
-	Vector x(m, 1);
+	Vector x(m, 0);
 	double f;
 	Vector g;
 	cout<<"*******************************************************************\n";
@@ -31,75 +31,76 @@ int main(int argc, char** argv){
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	gd(ll, Vector(m, 0), 1e-5, numEpochs);
+	gd(ll, x, 1e-5, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Testing Gradient Descent with Line Search for Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	gdLineSearch(ll, Vector(m, 0), 1, 1e-4, numEpochs);
+	gdLineSearch(ll, x, 1, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Testing Gradient Descent with Barzilia-Borwein Step Length for Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	gdBarzilaiBorwein(ll, Vector(m, 0), 1, 1e-4, numEpochs);
+	gdBarzilaiBorwein(ll, x, 1, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Testing Nesterov's Method for Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	gdNesterov(ll, Vector(m, 0), 1, 1e-4, numEpochs);
+	gdNesterov(ll, x, 1, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Testing Conjugate Gradient for Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	cg(ll, Vector(m, 0), 1, 1e-4, numEpochs);
+	cg(ll, x, 1, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"L-BFGS for Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	lbfgsMin(ll, Vector(m, 0), 1, 1e-4, numEpochs);
+	lbfgsMin(ll, x, 1, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Trust Region Newton Method for Logistic Loss, press enter to continue...\n";
+	cout<<"Note: This method does not check norm(gradient) < tol to determine convergence\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	tron(ll, Vector(m, 0), numEpochs);
+	tron(ll, x, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Stochastic Gradient Descent for Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	sgd(ll, Vector(m, 0), n, 1e-4, 100, 1e-4, numEpochs);
+	sgd(ll, x, n, 1e-4, 100, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Stochastic Gradient Descent with Decaying Learning Rate for Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	sgdDecayingLearningRate(ll, Vector(m, 0), n, 0.5*1e-1, 200, 1e-4, numEpochs, 0.6);
+	sgdDecayingLearningRate(ll, x, n, 0.5*1e-1, 200, 1e-4, numEpochs, 0.6);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Stochastic Gradient Descent with AdaGrad for Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	sgdAdagrad(ll, Vector(m, 0), n, 1e-2, 200, 1e-4, numEpochs);
+	sgdAdagrad(ll, x, n, 1e-2, 200, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"SGD with Stochastic Average Gradient for Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	sgdStochasticAverageGradient(ll, Vector(m, 0), n, 2, 1, 200, 1e-4, numEpochs, 1.0);
+	sgdStochasticAverageGradient(ll, x, n, 2, 1, 200, 1e-4, numEpochs, 1.0);
 }

@@ -59,7 +59,7 @@ namespace jensen {
 	s += alpha*d;
 	if (norm(s) > delta)
 	  {
-	    cout << "cg reaches trust region boundary\n";
+	    // cout << "cg reaches trust region boundary\n";
 	    *reach_boundary = true;
 	    alpha = -alpha;
 	    s += alpha*d;

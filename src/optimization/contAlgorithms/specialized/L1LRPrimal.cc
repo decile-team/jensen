@@ -49,14 +49,14 @@ static void transpose(const vector<SparseFeature>& features, vector<SparseFeatur
 	}
 }
 
-void L1LRPrimal(vector<SparseFeature>& features, Vector& y, Vector& x, double C, double eps){
+  void L1LRPrimal(vector<SparseFeature>& features, Vector& y, Vector& x, double C, double eps, const int max_newton_iter,  const int verbosity){
 	vector<SparseFeature> invfeatures;
 	transpose(features, invfeatures);
 	int n = features.size();
 	int m = invfeatures.size();
 	x = Vector(m, 0);
 	int s, newton_iter=0, iter=0;
-	int max_newton_iter = 100;
+	// int max_newton_iter = 100;
 	int max_iter = 1000;
 	int max_num_linesearch = 20;
 	int active_size;
@@ -354,7 +354,7 @@ void L1LRPrimal(vector<SparseFeature>& features, Vector& y, Vector& x, double C,
 		newton_iter++;
 		Gmax_old = Gmax_new;
 
-		printf("iter %3d  #CD cycles %d\n", newton_iter, iter);
+		// printf("iter %3d  #CD cycles %d\n", newton_iter, iter);
 		double v = 0;
 		int nnz = 0;
 		for(int j=0; j<m; j++)
@@ -369,8 +369,10 @@ void L1LRPrimal(vector<SparseFeature>& features, Vector& y, Vector& x, double C,
 			else
 				v += C*log(1+exp_wTx[j]);
 
-		printf("Objective value = %lf\n", v/C);
-		printf("#nonzeros/#features = %d/%d\n", nnz, n);
+		// printf("Objective value = %lf\n", v/C);
+		// printf("#nonzeros/#features = %d/%d\n", nnz, n);
+		if (verbosity > 0)
+		  printf("numIter: %d, #CD cycles: %d, ObjVal: %e, #nonzeros/#features: %d/%d\n", newton_iter, iter, v/C, nnz,n);
 	}
 
 	double v = 0;
@@ -387,8 +389,10 @@ void L1LRPrimal(vector<SparseFeature>& features, Vector& y, Vector& x, double C,
 		else
 			v += C*log(1+exp_wTx[j]);
 
-	printf("Objective value = %lf\n", v/C);
-	printf("#nonzeros/#features = %d/%d\n", nnz, n);
+	if (verbosity > 0)
+	  printf("numIter: %d, #CD cycles: %d, ObjVal: %e, #nonzeros/#features: %d/%d\n", newton_iter, iter, v/C, nnz,n);
+	// printf("Objective value = %lf\n", v/C);
+	// printf("#nonzeros/#features = %d/%d\n", nnz, n);
 	printf("=========================\n");
 	printf("optimization finished, #iter = %d\n", newton_iter);
 	if(newton_iter >= max_newton_iter)
