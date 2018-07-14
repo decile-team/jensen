@@ -13,8 +13,6 @@ using namespace jensen;
 using namespace std;
 
 int main(int argc, char** argv){
-	// char* featureFile = "../data/20newsgroup.feat";
-	// char* labelFile = "../data/20newsgroup.label";
 	char* featureFile = "../data/20newsgroup.feat";
 	char* labelFile = "../data/20newsgroup.label";
 	int n; // number of data items
@@ -22,7 +20,7 @@ int main(int argc, char** argv){
 	int numEpochs = 50;
 	bool checkOld = false;
 	vector<struct SparseFeature> features = readFeatureVectorSparse(featureFile, n, m);
-	Vector y = readVector(labelFile, n);
+	Vector y = readVector(labelFile, n) - 1;
 	L1LogisticLoss <SparseFeature>l(m, features, y, 0);
 	L1LogisticLoss<SparseFeature> ll(m, features, y, 1);
 	Vector x(m, 0);
@@ -72,7 +70,7 @@ int main(int argc, char** argv){
 	lbfgsMin(ll, x, 1, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
-	cout<<"L-BFGS-Owl for L1-Logistic Loss, press enter to continue...\n";
+	cout<<"LBFGS with orthant-wise projection (OWL-QN) for L1-regularized Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
@@ -109,14 +107,6 @@ int main(int argc, char** argv){
 	sgdAdagrad(ll, x, n, 1e-4, 200, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
-	cout<<"LBFGS with orthant-wise projection for L1-regularized Logistic Loss, press enter to continue...\n";
-	#ifndef DEBUG
-	cin.get();
-	#endif
-	lbfgsMinOwl(ll, x, 1, 1e-0, numEpochs, 100, 1e-4);
-
-	cout<<"*******************************************************************\n";
-
 	cout<<"SGD with L1-regularized Dual-Averaging for Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();

@@ -12,12 +12,12 @@ using namespace jensen;
 using namespace std;
 
 int main(int argc, char** argv){
-	char* featureFile = "../data/heart_scale.feat";
-	char* labelFile = "../data/heart_scale.label";
+	char* featureFile = "../data/20newsgroup.feat";
+	char* labelFile = "../data/20newsgroup.label";
 	int n; // number of data items
 	int m; // numFeatures
 	vector<struct SparseFeature> features = readFeatureVectorSparse(featureFile, n, m);
-	Vector y = readVector(labelFile, n);
+	Vector y = readVector(labelFile, n) - 1;
 	int numEpochs = 50;
 	L1LeastSquaresLoss<SparseFeature> ll(m, features, y, 1);
 	L1LogisticLoss <SparseFeature>l(m, features, y, 0);
@@ -25,7 +25,6 @@ int main(int argc, char** argv){
 	Vector x(m, 1);
 	double f;
 	Vector g;
-
 	cout<<"*******************************************************************\n";
 	cout<<"Testing Gradient Descent with Least Squares Loss, press enter to continue...\n";
 	#ifndef DEBUG
@@ -100,13 +99,13 @@ int main(int argc, char** argv){
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	sgdRegularizedDualAveraging(l, ll, x, n, 1e-1, 1e-3, 200, 1e-4, 250, 0.5);
+	sgdRegularizedDualAveraging(l, ll, x, n, 1e-1, 1e-3, 200, 1e-4, numEpochs, 0.5);
 
 	cout<<"*******************************************************************\n";
 	cout<<"SGD with L1-regularized Dual-Averaging and AdaGrad for Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG
 	cin.get();
 	#endif
-	sgdRegularizedDualAveragingAdagrad(l, ll, x, n, 1e-1, 1e-3, 200, 1e-4, 250);
+	sgdRegularizedDualAveragingAdagrad(l, ll, x, n, 1e-1, 1e-3, 200, 1e-4, numEpochs);
 
 }

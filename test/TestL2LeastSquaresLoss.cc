@@ -12,12 +12,12 @@ using namespace jensen;
 using namespace std;
 
 int main(int argc, char** argv){
-	char* featureFile = "../data/heart_scale.feat";
-	char* labelFile = "../data/heart_scale.label";
+	char* featureFile = "../data/20newsgroup.feat";
+	char* labelFile = "../data/20newsgroup.label";
 	int n; // number of data items
 	int m; // numFeatures
 	vector<struct SparseFeature> features = readFeatureVectorSparse(featureFile, n, m);
-	Vector y = readVector(labelFile, n);
+	Vector y = readVector(labelFile, n) - 1;
 	int numEpochs = 50;
 	L2LeastSquaresLoss<SparseFeature> ll(m, features, y, 1);
 	double stepSize = 1e-4;

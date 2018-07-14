@@ -17,7 +17,7 @@ int main(int argc, char** argv){
 	int n; // number of data items
 	int m; // numFeatures
 	vector<struct SparseFeature> features = readFeatureVectorSparse(featureFile, n, m);
-	Vector y = readVector(labelFile, n);
+	Vector y = readVector(labelFile, n) - 1;
 	int numEpochs = 50;
 	L1SmoothSVMLoss<SparseFeature> ll(m, features, y, 1);
 
