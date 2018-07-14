@@ -67,7 +67,7 @@ int main(int argc, char** argv){
 	lbfgsMin(ll, x, 1, 1e-4, numEpochs);
 
 	cout<<"*******************************************************************\n";
-	cout<<"Trust Region Newton Method for Logistic Loss, press enter to continue...\n";
+	cout<<"Trust Region Newton Method for Smooth SVM Loss, press enter to continue...\n";
 	cout<<"Note: This method does not check norm(gradient) < tol to determine convergence\n";
 	#ifndef DEBUG
 	cin.get();
@@ -75,7 +75,7 @@ int main(int argc, char** argv){
 	tron(ll, x, numEpochs);
 
 	cout<<"*******************************************************************\n";
-	cout<<"Dual Coordinate Descent with L2 Hinge SVM Loss, press enter to continue...\n";
+	cout<<"Dual Coordinate Descent with L2 Smooth SVM Loss, press enter to continue...\n";
 	cout<<"Note: This method does not check norm(gradient) < tol to determine convergence\n";
 	#ifndef DEBUG
 	cin.get();

@@ -133,14 +133,3 @@ IF(WIN32 AND NOT UNIX)
 ELSE(WIN32 AND NOT UNIX)
   SET(CPACK_SOURCE_STRIP_FILES "")
 ENDIF(WIN32 AND NOT UNIX)
-
-# 	src/optimization/contFunctions/SumContinuousFunctions.cc
-#	src/optimization/contFunctions/SimpleFunctions.cc
-#	src/optimization/contFunctions/LogisticLoss.cc
-#	src/optimization/contFunctions/SmoothSVMLoss.cc
-#	src/optimization/contFunctions/SmoothSVRLoss.cc
-#	src/optimization/contFunctions/LeastSquaresLoss.cc
-#	src/optimization/contFunctions/ProbitLoss.cc
-#	src/optimization/contFunctions/HuberSVMLoss.cc
-#	src/optimization/contFunctions/HingeSVMLoss.cc
-#	src/optimization/contFunctions/HingeSVRLoss.cc

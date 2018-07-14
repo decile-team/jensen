@@ -78,14 +78,14 @@ int main(int argc, char** argv){
 	#endif
 	lbfgsMinOwl(ll, x, 1, 1e-4, numEpochs);
 
-	cout<<"*******************************************************************\n";
-	cout<<"Testing LibLinear Coordinate Descent Algorithm, press enter to continue\n";
-	cout<<"Note: This method does not check norm(gradient) < tol to determine convergence\n";
-	#ifndef DEBUG
-	cin.get();
-	#endif
-	Vector xL1LR;
-	L1LRPrimal(features, y, xL1LR, 1, 1e-2, numEpochs);
+	// cout<<"*******************************************************************\n";
+	// cout<<"Testing LibLinear Coordinate Descent Algorithm, press enter to continue\n";
+	// cout<<"Note: This method does not check norm(gradient) < tol to determine convergence\n";
+	// #ifndef DEBUG
+	// cin.get();
+	// #endif
+	// Vector xL1LR;
+	// L1LRPrimal(features, y, xL1LR, 1, 1e-2, numEpochs);
 
 	cout<<"*******************************************************************\n";
 	cout<<"Stochastic Gradient Descent for L1-Logistic Loss, press enter to continue...\n";
