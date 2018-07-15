@@ -36,7 +36,7 @@ Features Supported
  - Stochastic Gradient Descent with AdaGrad
  - Stochastic Gradient Descent with Dual Averaging
  - Stochastic Gradient Descent with Decaying Learning Rate
- 
+  
 3) ML Classification API 
  - L1 Logistic Regression, 
  - L2 Logistic Regression
@@ -51,4 +51,12 @@ Features Supported
  - L2 Smooth SVRs
  - L2 Hinge SVRs
  
+Install and Build
+1) Install CMake
+2) Go to the main directory of jensen
+3) mkdir build
+4) cd build/
+5) cmake ..
+
+Once you run cmake, it should automatically build the entire library. Once the library is built, please try out the example codes
 
