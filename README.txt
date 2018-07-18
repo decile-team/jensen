@@ -6,6 +6,8 @@ See COPYING or http://opensource.org/licenses/OSL-3.0
 
 Jensen: A toolkit with API support for Convex Optimization and Machine Learning
 
+For further documentation, please see https://arxiv.org/abs/1807.06574
+
 Contributors:
 - Rishabh Iyer
 - John Halloran
@@ -28,6 +30,8 @@ Features Supported
  - Trust Region Newton (TRON)
  - LBFGS Algorithm
  - LBFGS OWL (L1 regularization)
+ - Conjugate Gradient Descent
+ - Dual Coordinate Descent for SVMs (SVCDual)
  - Gradient Descent
  - Gradient Descent with Line Search
  - Gradient Descent with Nesterov's algorithm
@@ -57,6 +61,6 @@ Install and Build
 3) mkdir build
 4) cd build/
 5) cmake ..
+6) make
 
-Once you run cmake, it should automatically build the entire library. Once the library is built, please try out the example codes
-
+Once you run make, it should automatically build the entire library. Once the library is built, please try out the example codes in the build directory.
