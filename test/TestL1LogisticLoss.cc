@@ -13,8 +13,8 @@ using namespace jensen;
 using namespace std;
 
 int main(int argc, char** argv){
-	char* featureFile = "../data/20newsgroup.feat";
-	char* labelFile = "../data/20newsgroup.label";
+	const char* featureFile = "../data/20newsgroup.feat";
+	const char* labelFile = "../data/20newsgroup.label";
 	int n; // number of data items
 	int m; // numFeatures
 	int numEpochs = 50;
