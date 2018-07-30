@@ -13,10 +13,10 @@ using namespace jensen;
 using namespace std;
 
 int main(int argc, char** argv){
-	// char* featureFile = "../jensenData/sidoF.txt";
-	// char* labelFile = "../jensenData/sidoL.txt";
-	char* featureFile = "../jensenData/20newsgroup.feat";
-	char* labelFile = "../jensenData/20newsgroup.label";
+	// const char* featureFile = "../jensenData/sidoF.txt";
+	// const char* labelFile = "../jensenData/sidoL.txt";
+	const char* featureFile = "../jensenData/20newsgroup.feat";
+	const char* labelFile = "../jensenData/20newsgroup.label";
 	int n; // number of data items
 	int m; // numFeatures
 	bool checkOld = false;

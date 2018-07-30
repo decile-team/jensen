@@ -1,6 +1,7 @@
-// Copyright (C) Rishabh Iyer, John T. Halloran, and Kai Wei
-// Licensed under the Open Software License version 3.0
-// See COPYING or http://opensource.org/licenses/OSL-3.0
+# Copyright (C) Rishabh Iyer, John T. Halloran, and Kai Wei
+# Licensed under the Open Software License version 3.0
+# See COPYING or http://opensource.org/licenses/OSL-3.0
+
 #!/bin/bash
 
 ############### jensen build/test functions
@@ -44,7 +45,7 @@ function testCMTK {
     fi
     # run test suite
     cd build
-    for t in TestSmoothSVMLoss TestProbitLoss TestLogisticLoss TestLeastSquaresLoss TestHuberSVMLoss
+    for t in TestL1SmoothSVMLoss TestL2SmoothSVMLoss TestL1ProbitLoss TestL2ProbitLoss TestL1LogisticLoss TestL2LogisticLoss TestL1LeastSquaresLoss TestL2LeastSquaresLoss TestL1HuberSVMLoss TestL2HuberSVMLoss
     do
 	if [ -e $t ]
 	then

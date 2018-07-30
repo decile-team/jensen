@@ -12,8 +12,8 @@ using namespace jensen;
 using namespace std;
 
 int main(int argc, char** argv){
-	char* featureFile = "../jensenData/sidoF.txt";
-	char* labelFile = "../jensenData/sidoL.txt";
+	const char* featureFile = "../jensenData/sidoF.txt";
+	const char* labelFile = "../jensenData/sidoL.txt";
 	int n; // number of data items
 	int m; // numFeatures
 	vector<struct SparseFeature> features = readFeatureVectorSparse(featureFile, n, m);
