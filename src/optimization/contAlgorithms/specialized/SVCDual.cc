@@ -2,15 +2,15 @@
 // Modified for use in Jensen by Rishabh Iyer
 /*
  *	Co-ordinate Descent Algorithm for L2 Regularized Support vector machine Classification
-	Anthor: Rishabh Iyer
+        Anthor: Rishabh Iyer
  *
-	Input: 	vector<SparseFeatures> features: Features for training
-			Vector y: Labels (binary)
-			Vector w: Output weights
-			double C: 1/lambda (regularization)
-			double eps: tolerance
+        Input:  vector<SparseFeatures> features: Features for training
+                        Vector y: Labels (binary)
+                        Vector w: Output weights
+                        double C: 1/lambda (regularization)
+                        double eps: tolerance
 
-	Output: Output on convergence (x)
+        Output: Output on convergence (x)
  */
 
 #include <stdio.h>
@@ -36,8 +36,8 @@ using namespace std;
 //#endif
 
 namespace jensen {
-  Vector SVCDual(vector<SparseFeature>& features, Vector& y, int solver_type, double lambda, double eps, int max_iter, const int verbosity)
-	{
+Vector SVCDual(vector<SparseFeature>& features, Vector& y, int solver_type, double lambda, double eps, int max_iter, const int verbosity)
+{
 	int l = features.size(); // number of training examples
 	int w_size = features[0].numFeatures; // dimension of the features
 	Vector w = Vector(w_size, 0);
@@ -65,7 +65,7 @@ namespace jensen {
 		upper_bound = C;
 		c = new L2HingeSVMLoss<SparseFeature>(w_size, features, y, lambda);
 	}
-	else if (solver_type == L2R_L2LOSS_SVC_DUAL){
+	else if (solver_type == L2R_L2LOSS_SVC_DUAL) {
 		diag = 0.5*lambda;
 		upper_bound = INF;
 		c = new L2SmoothSVMLoss<SparseFeature>(w_size, features, y, lambda);
@@ -81,7 +81,7 @@ namespace jensen {
 	{
 		QD[i] = 0.5/C;
 
-		for (int j = 0; j < features[i].featureIndex.size(); j++){
+		for (int j = 0; j < features[i].featureIndex.size(); j++) {
 			double val = features[i].featureVec[j];
 			int ind = features[i].featureIndex[j];
 			QD[i] += val*val;
@@ -106,7 +106,7 @@ namespace jensen {
 			i = index[s];
 			G = 0;
 
-			for (int j = 0; j < features[i].featureIndex.size(); j++){
+			for (int j = 0; j < features[i].featureIndex.size(); j++) {
 				double val = features[i].featureVec[j];
 				int ind = features[i].featureIndex[j];
 				G += w[ind]*val;
@@ -152,7 +152,7 @@ namespace jensen {
 				double alpha_old = alpha[i];
 				alpha[i] = min(max(alpha[i] - G/QD[i], 0.0), C);
 				d = (alpha[i] - alpha_old)*y[i];
-				for (int j = 0; j < features[i].featureIndex.size(); j++){
+				for (int j = 0; j < features[i].featureIndex.size(); j++) {
 					double val = features[i].featureVec[j];
 					int ind = features[i].featureIndex[j];
 					w[ind] += d*val;
@@ -164,26 +164,26 @@ namespace jensen {
 		if(iter % 10 == 0)
 			// printf(".");
 
-		if(PGmax_new - PGmin_new <= eps)
-		{
-			if(active_size == l)
-				break;
-			else
+			if(PGmax_new - PGmin_new <= eps)
 			{
-				active_size = l;
-				// printf("*");
-				PGmax_old = INF;
-				PGmin_old = -INF;
-				continue;
+				if(active_size == l)
+					break;
+				else
+				{
+					active_size = l;
+					// printf("*");
+					PGmax_old = INF;
+					PGmin_old = -INF;
+					continue;
+				}
 			}
-		}
 		PGmax_old = PGmax_new;
 		PGmin_old = PGmin_new;
 		if (PGmax_old <= 0)
 			PGmax_old = INF;
 		if (PGmin_old >= 0)
 			PGmin_old = -INF;
-		
+
 		// calculate objective value
 
 		double v = 0;
@@ -199,7 +199,7 @@ namespace jensen {
 		pval = c->eval(w);
 		// printf("Dual Objective value = %lf, Primal Objective Value = %lf, nSV = %d\n",v/2, pval, nSV);
 		if(verbosity > 0)
-		  printf("numIter: %d, ObjVal: %e, Dual ObjVal: %e, nSV: %e\n", iter, pval, v/2, nSV);
+			printf("numIter: %d, ObjVal: %e, Dual ObjVal: %e, nSV: %e\n", iter, pval, v/2, nSV);
 	}
 
 	// printf("\noptimization finished, #iter = %d\n",iter);

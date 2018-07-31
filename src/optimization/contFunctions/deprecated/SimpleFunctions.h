@@ -2,9 +2,9 @@
 // Licensed under the Open Software License version 3.0
 // See COPYING or http://opensource.org/licenses/OSL-3.0
 /*
-	Jensen: A Convex Optimization And Machine Learning ToolKit
+        Jensen: A Convex Optimization And Machine Learning ToolKit
  *	Abstract base class for simple functions (whose prox operator can be efficiently found)
-	Author: Rishabh Iyer
+        Author: Rishabh Iyer
  *
  */
 
@@ -17,18 +17,18 @@
 #include "ContinuousFunctions.h"
 namespace jensen {
 
-	class SimpleFunctions: public ContinuousFunctions{
-	protected:
-		int m; // Dimension of vectors or features (i.e. size of x in f(x))
-	public:
-		SimpleFunctions(int m);
-        SimpleFunctions(const SimpleFunctions& s); // copy constructor
-		
-		virtual ~SimpleFunctions();
-		
-		virtual double eval(const Vector& x) const; // functionEval
-		virtual Vector evalProx(const Vector& x, double t) const; // a prox operator
-	};
-	
+class SimpleFunctions : public ContinuousFunctions {
+protected:
+int m;                 // Dimension of vectors or features (i.e. size of x in f(x))
+public:
+SimpleFunctions(int m);
+SimpleFunctions(const SimpleFunctions& s);         // copy constructor
+
+virtual ~SimpleFunctions();
+
+virtual double eval(const Vector& x) const;                 // functionEval
+virtual Vector evalProx(const Vector& x, double t) const;                 // a prox operator
+};
+
 }
 #endif

@@ -2,9 +2,9 @@
 // Licensed under the Open Software License version 3.0
 // See COPYING or http://opensource.org/licenses/OSL-3.0
 /*
-	Jensen: A Convex Optimization And Machine Learning ToolKit
+        Jensen: A Convex Optimization And Machine Learning ToolKit
  *	A typedef defining vectors (since the vector class in STL is quite versatile, we just use it in this toolkit)
-	Author: Rishabh Iyer
+        Author: Rishabh Iyer
  *
  */
 
@@ -12,10 +12,10 @@
 #define VECTOR_H
 
 #include <stdio.h>
-#include <stdlib.h>	
+#include <stdlib.h>
 #include <vector>
 
-namespace jensen{
+namespace jensen {
 
 typedef std::vector<double> Vector;
 }

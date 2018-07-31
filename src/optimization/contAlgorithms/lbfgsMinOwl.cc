@@ -5,20 +5,20 @@
 
 
  *	LBFGS with orthant-wise projection (Algorithm from Andrew and Gao, 2007)
-	Solves the problem \min_x L(x) + |x|_1, i.e L1 regularized optimization problems.
-	This algorithm directly encourages sparsity.
-	Anthor: Rishabh Iyer
+        Solves the problem \min_x L(x) + |x|_1, i.e L1 regularized optimization problems.
+        This algorithm directly encourages sparsity.
+        Anthor: Rishabh Iyer
  *
-	Input: 	Continuous Function: c
-		   	Initial starting point x0
-			Initial step-size (alpha)
-			back-tracking parameter (gamma)
-			max number of function evaluations (maxEvals)
-			Tolerance (TOL)
-			resetAlpha (whether to reset alpha at every iteration or not)
-			verbosity
+        Input:  Continuous Function: c
+                        Initial starting point x0
+                        Initial step-size (alpha)
+                        back-tracking parameter (gamma)
+                        max number of function evaluations (maxEvals)
+                        Tolerance (TOL)
+                        resetAlpha (whether to reset alpha at every iteration or not)
+                        verbosity
 
-	Output: Output on convergence (x)
+        Output: Output on convergence (x)
  */
 
 #include <stdio.h>
@@ -32,7 +32,7 @@ using namespace std;
 namespace jensen {
 
 inline void lbfgsUpdate(Matrix& S, Matrix& Y, const Vector& s, const Vector& y, int memory){
-	if (Y.numRows() < memory){
+	if (Y.numRows() < memory) {
 		S.push_back(s);
 		Y.push_back(y);
 	}
@@ -55,23 +55,23 @@ inline void lbfgsDirection(const Vector& g, const Matrix& S, const Matrix& Y, co
 	Vector al(k, 0);
 	Vector be(k, 0);
 	Q[k] = g;
-	for (int i = k-1; i >= 0; i--){
+	for (int i = k-1; i >= 0; i--) {
 		al[i] = ro[i]*(S[i]*Q[i+1]);
 		Q[i] = Q[i+1] - al[i]*Y[i];
 	}
 	R[0] = h*Q[1];
-	for (int i = 0; i < k; i++){
+	for (int i = 0; i < k; i++) {
 		be[i] = ro[i]*(Y[i]*R[i]);
 		R[i+1] = R[i] + S[i]*(al[i] - be[i]);
-	}		
+	}
 	d = R[k];
 	return;
-}	
+}
 
 inline void orthantProject(const Vector& x, const Vector& xi, Vector& xp)
 {
 	xp = Vector(x.size(), 0);
-	for (int i = 0; i < x.size(); i++){
+	for (int i = 0; i < x.size(); i++) {
 		if (sign(x[i]) != xi[i])
 			xp[i] = 0;
 		else
@@ -79,8 +79,8 @@ inline void orthantProject(const Vector& x, const Vector& xi, Vector& xp)
 	}
 }
 
-Vector lbfgsMinOwl(const ContinuousFunctions& c, const Vector& x0, double alpha, const double gamma, 
-const int maxEval, const int memory, const double TOL, bool resetAlpha, bool useinputAlpha, int verbosity){
+Vector lbfgsMinOwl(const ContinuousFunctions& c, const Vector& x0, double alpha, const double gamma,
+                   const int maxEval, const int memory, const double TOL, bool resetAlpha, bool useinputAlpha, int verbosity){
 	Vector x(x0);
 	Vector g;
 	double f;
@@ -94,7 +94,7 @@ const int maxEval, const int memory, const double TOL, bool resetAlpha, bool use
 	Vector xold;
 	double fold;
 	Vector gold;
-	
+
 	Vector d = g; // lbfgs direction
 	Matrix S;
 	Matrix Y;
@@ -103,7 +103,7 @@ const int maxEval, const int memory, const double TOL, bool resetAlpha, bool use
 		alpha = 1/norm(g);
 	while ( (fnorm >= TOL) && (funcEval < maxEval) )
 	{
-		if (funcEval > 1){
+		if (funcEval > 1) {
 			Vector y = g - gold;
 			Vector s = x - xold;
 			lbfgsUpdate(S, Y, s, y, memory);
@@ -115,7 +115,7 @@ const int maxEval, const int memory, const double TOL, bool resetAlpha, bool use
 		gold = g;
 		xold = x;
 		Vector xi = sign(x);
-		for (int i = 0; i < x.size(); i++){
+		for (int i = 0; i < x.size(); i++) {
 			if (sign(d[i]) != sign(g[i]))
 				d[i] = 0;
 			if (x[i] == 0)
@@ -125,10 +125,10 @@ const int maxEval, const int memory, const double TOL, bool resetAlpha, bool use
 		c.eval(xnew, fnew, gnew);
 		funcEval++;
 
-		double gd = g*d;		
+		double gd = g*d;
 		// double fgoal = f - gamma*alpha*gd;
 		// Backtracking line search
-		while (fnew > f - gamma*g*(xnew - x)){
+		while (fnew > f - gamma*g*(xnew - x)) {
 			alpha = alpha*alpha*gd/(2*(fnew + gd*alpha - f));
 			orthantProject(x - alpha*d, xi, xnew);
 			c.eval(xnew, fnew, gnew);
@@ -146,5 +146,5 @@ const int maxEval, const int memory, const double TOL, bool resetAlpha, bool use
 	}
 	return x;
 }
-	
+
 }

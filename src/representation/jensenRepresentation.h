@@ -7,7 +7,7 @@
 #include "Vector.h"
 #include "Matrix.h"
 #include "SparseFeature.h"
-#include "VectorOperations.h"	
+#include "VectorOperations.h"
 #include "MatrixOperations.h"
 #include "FileIO.h"
 #endif

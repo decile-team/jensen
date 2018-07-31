@@ -5,21 +5,21 @@
 
 
  *	Gradient Descent for Unconstrained Convex Minimization with backtracking line search and Barzilai-Borwein
-	step length
+        step length
 
-	Solves the problem \min_x \phi(x), where \phi is a convex (or continuous) function.
-	Anthor: Rishabh Iyer, John Halloran and Kai Wei
+        Solves the problem \min_x \phi(x), where \phi is a convex (or continuous) function.
+        Anthor: Rishabh Iyer, John Halloran and Kai Wei
  *
-	Input: 	Continuous Function: c
-		   	Initial starting point x0
-			Initial step-size (alpha)
-			back-tracking parameter (gamma)
-			max number of function evaluations (maxEvals)
-			Tolerance (TOL)
-			resetAlpha (whether to reset alpha at every iteration or not)
-			verbosity
+        Input:  Continuous Function: c
+                        Initial starting point x0
+                        Initial step-size (alpha)
+                        back-tracking parameter (gamma)
+                        max number of function evaluations (maxEvals)
+                        Tolerance (TOL)
+                        resetAlpha (whether to reset alpha at every iteration or not)
+                        verbosity
 
-	Output: Output on convergence (x)
+        Output: Output on convergence (x)
  */
 
 #include <stdio.h>
@@ -31,7 +31,7 @@ using namespace std;
 namespace jensen {
 
 Vector gdBarzilaiBorwein(const ContinuousFunctions& c, const Vector& x0, double alpha, const double gamma,
-const int maxEval, const double TOL, bool useinputAlpha, int verbosity){
+                         const int maxEval, const double TOL, bool useinputAlpha, int verbosity){
 	Vector x(x0);
 	Vector g;
 	double f;
@@ -51,7 +51,7 @@ const int maxEval, const double TOL, bool useinputAlpha, int verbosity){
 		funcEval++;
 		// double fgoal = f - gamma*alpha*gg;
 		// Backtracking line search
-		while (fnew > f - gamma*alpha*gg){
+		while (fnew > f - gamma*alpha*gg) {
 			alpha = alpha*alpha*gg/(2*(fnew + gg*alpha - f));
 			// printf("alpha: %e, fnew = %e, fgoal = %e\n", alpha, fnew, fgoal);
 			xnew = x - alpha*g;

@@ -5,19 +5,19 @@
 
 
  *	Gradient Descent for Unconstrained Convex Minimization with backtracking line search
-	Solves the problem \min_x \phi(x), where \phi is a convex (or continuous) function.
-	Anthor: Rishabh Iyer
+        Solves the problem \min_x \phi(x), where \phi is a convex (or continuous) function.
+        Anthor: Rishabh Iyer
  *
-	Input: 	Continuous Function: c
-		   	Initial starting point x0
-			Initial step-size (alpha)
-			back-tracking parameter (gamma)
-			max number of function evaluations (maxEvals)
-			Tolerance (TOL)
-			resetAlpha (whether to reset alpha at every iteration or not)
-			verbosity
+        Input:  Continuous Function: c
+                        Initial starting point x0
+                        Initial step-size (alpha)
+                        back-tracking parameter (gamma)
+                        max number of function evaluations (maxEvals)
+                        Tolerance (TOL)
+                        resetAlpha (whether to reset alpha at every iteration or not)
+                        verbosity
 
-	Output: Output on convergence (x)
+        Output: Output on convergence (x)
  */
 
 #include <stdio.h>
@@ -30,7 +30,7 @@ using namespace std;
 namespace jensen {
 
 inline void lbfgsUpdate(Matrix& S, Matrix& Y, const Vector& s, const Vector& y, int memory){
-	if (Y.numRows() < memory){
+	if (Y.numRows() < memory) {
 		S.push_back(s);
 		Y.push_back(y);
 	}
@@ -53,23 +53,23 @@ inline void lbfgsDirection(const Vector& g, const Matrix& S, const Matrix& Y, co
 	Vector al(k, 0);
 	Vector be(k, 0);
 	Q[k] = g;
-	for (int i = k-1; i >= 0; i--){
+	for (int i = k-1; i >= 0; i--) {
 		al[i] = ro[i]*(S[i]*Q[i+1]);
 		// Q[i] = Q[i+1] - al[i]*Y[i];
 		multiplyAccumulate(Q[i], Q[i+1], al[i], Y[i]);
 	}
 	R[0] = h*Q[1];
-	for (int i = 0; i < k; i++){
+	for (int i = 0; i < k; i++) {
 		be[i] = ro[i]*(Y[i]*R[i]);
 		// R[i+1] = R[i] + S[i]*(al[i] - be[i]);
 		multiplyAccumulate(R[i+1], R[i], be[i] - al[i], S[i]);
-	}		
+	}
 	d = R[k];
 	return;
-}	
+}
 
-Vector lbfgsMin(const ContinuousFunctions& c, const Vector& x0, double alpha, const double gamma, 
-const int maxEval, const int memory, const double TOL, bool resetAlpha, bool useinputAlpha, int verbosity){
+Vector lbfgsMin(const ContinuousFunctions& c, const Vector& x0, double alpha, const double gamma,
+                const int maxEval, const int memory, const double TOL, bool resetAlpha, bool useinputAlpha, int verbosity){
 	Vector x(x0);
 	Vector g;
 	double f;
@@ -92,10 +92,10 @@ const int maxEval, const int memory, const double TOL, bool resetAlpha, bool use
 		c.eval(xnew, fnew, gnew);
 		funcEval++;
 
-		double gd = g*d;		
+		double gd = g*d;
 		// double fgoal = f - gamma*alpha*gd;
 		// Backtracking line search
-		while (fnew > f - gamma*alpha*gd){
+		while (fnew > f - gamma*alpha*gd) {
 			alpha = alpha*alpha*gd/(2*(fnew + gd*alpha - f));
 			// xnew = x - alpha*d;
 			multiplyAccumulate(xnew, x, alpha, d);
@@ -115,9 +115,9 @@ const int maxEval, const int memory, const double TOL, bool resetAlpha, bool use
 			printf("numIter: %d, alpha: %e, ObjVal: %e, OptCond: %e\n", funcEval, alpha, f, gnorm);
 		if (resetAlpha)
 			alpha = 1;
-		
+
 	}
 	return x;
 }
-	
+
 }
