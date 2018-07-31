@@ -3,7 +3,7 @@
 // See COPYING or http://opensource.org/licenses/OSL-3.0
 /*
 
-   Anthor: Rishabh Iyer, John Halloran and Kai Wei
+   Author: Rishabh Iyer, John Halloran and Kai Wei
 
  *	Gradient Descent for Unconstrained Convex Minimization with backtracking line search
         Solves the problem \min_x \phi(x), where \phi is a convex (or continuous) function.

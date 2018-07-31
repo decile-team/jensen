@@ -8,7 +8,7 @@
         step length
 
         Solves the problem \min_x \phi(x), where \phi is a convex (or continuous) function.
-        Anthor: Rishabh Iyer, John Halloran and Kai Wei
+        Author: Rishabh Iyer, John Halloran and Kai Wei
  *
         Input:  Continuous Function: c
                         Initial starting point x0

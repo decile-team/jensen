@@ -6,7 +6,7 @@
 
  *	Stochastic gradient descent with fixed, input step-size
         Solves the problem \min_x \phi(x), where \phi is a convex (or continuous) function.
-        Anthor: John Halloran
+        Author: John Halloran
  *
         Input:  Continuous Function: c
                         Initial starting point x0

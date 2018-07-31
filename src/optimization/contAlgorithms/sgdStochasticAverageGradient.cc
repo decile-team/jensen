@@ -6,7 +6,7 @@
 
  *	Stochastic gradient descent using the stochastic average gradient algorithm (Le Roux et al, 2012).
         Solves the problem \min_x L(x), where L is assumed to be strongly convex.
-        Anthor: John Halloran
+        Author: John Halloran
  *
         Input:  Continuous Function: c
                         Number of training/data instances/samples (numSamples)

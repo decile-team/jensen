@@ -2,7 +2,7 @@
 // Modified for use in Jensen by Rishabh Iyer
 /*
  *	Co-ordinate Descent Algorithm for L2 Regularized Support vector machine Classification
-        Anthor: Rishabh Iyer
+        Author: Rishabh Iyer
  *
         Input:  vector<SparseFeatures> features: Features for training
                         Vector y: Labels (binary)

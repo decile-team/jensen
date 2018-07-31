@@ -6,7 +6,7 @@
 
  *	Gradient Descent for Unconstrained Convex Minimization with constant step size
         Solves the problem \min_x \phi(x), where \phi is a convex (or continuous) function.
-        Anthor: Rishabh Iyer
+        Author: Rishabh Iyer
  *
         Input:  Continuous Function: c
                         Initial starting point x0

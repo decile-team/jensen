@@ -8,7 +8,7 @@
         to promote sparseness (i.e., L1 regularization), with automatic step-size adjustment
         using AdaGrad (Duchi et al, 2010).
         Solves the problem \min_x L(x) + |x|_1, i.e L1 regularized optimization problems.
-        Anthor: John Halloran
+        Author: John Halloran
  *
         Input:  Continuous Function: c
                         Number of training/data instances/samples (numSamples)

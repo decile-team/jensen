@@ -7,7 +7,7 @@
  *	LBFGS with orthant-wise projection (Algorithm from Andrew and Gao, 2007)
         Solves the problem \min_x L(x) + |x|_1, i.e L1 regularized optimization problems.
         This algorithm directly encourages sparsity.
-        Anthor: Rishabh Iyer
+        Author: Rishabh Iyer
  *
         Input:  Continuous Function: c
                         Initial starting point x0

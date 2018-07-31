@@ -3,7 +3,7 @@
 // See COPYING or http://opensource.org/licenses/OSL-3.0
 /*
 
-   Anthor: Rishabh Iyer, John Halloran and Kai Wei
+   Author: Rishabh Iyer, John Halloran and Kai Wei
  *
         Input:  Continuous Function: c
                         Initial starting point x0

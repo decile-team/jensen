@@ -7,7 +7,7 @@
  *	Stochastic gradient descent with a decaying learning rate.  The rate of decay is
    (t) ^ (-decayRate), where t is the number of considered minibatches.
    Solves the problem \min_x \phi(x), where \phi is a convex (or continuous) function.
-   Anthor: John Halloran
+   Author: John Halloran
  *
    Input:       Continuous Function: c
    Initial starting point x0

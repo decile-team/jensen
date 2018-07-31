@@ -6,7 +6,7 @@
  *	Trust Region Newton Method, using Conjugate Gradient at every iteration
         Solves the problem \min_x L(x) + |x|_1, i.e L1 regularized optimization problems.
         This algorithm directly encourages sparsity.
-        Anthor: Rishabh Iyer
+        Author: Rishabh Iyer
  *
         Input:  Continuous Function: c
                         Initial starting point x0

@@ -7,7 +7,7 @@
  *	Gradient Descent for Unconstrained Convex Minimization with Nesterov's method
 
         Solves the problem \min_x \phi(x), where \phi is a convex (or continuous) function.
-        Anthor: Rishabh Iyer
+        Author: Rishabh Iyer
  *
         Input:  Continuous Function: c
                         Initial starting point x0
