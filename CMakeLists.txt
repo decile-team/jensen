@@ -112,14 +112,14 @@ target_link_libraries(TestL2HingeSVMLoss jensen)
 add_executable(TestL2HingeSVRLoss test/TestL2HingeSVRLoss.cc)
 target_link_libraries(TestL2HingeSVRLoss jensen)
 
-add_executable(TestClassification test/TestClassification.cc)
-target_link_libraries(TestClassification jensen)
+add_executable(ClassificationExample examples/ClassificationExample.cc)
+target_link_libraries(ClassificationExample jensen)
 
-add_executable(TestClassificationLibSVM test/TestClassificationLibSVM.cc)
-target_link_libraries(TestClassificationLibSVM jensen)
+add_executable(ClassificationLibSVMExample examples/ClassificationLibSVMExample.cc)
+target_link_libraries(ClassificationLibSVMExample jensen)
 
-add_executable(TestClassificationCrossVal test/TestClassificationCrossVal.cc)
-target_link_libraries(TestClassificationCrossVal jensen)
+add_executable(ClassificationCrossValExample examples/ClassificationCrossValExample.cc)
+target_link_libraries(ClassificationCrossValExample jensen)
 
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Jensen: The Convex Optimization and Machine Learning ToolKit")
 SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")

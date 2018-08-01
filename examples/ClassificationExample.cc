@@ -12,6 +12,7 @@
 #include "../src/jensen.h"
 using namespace jensen;
 using namespace std;
+
 char* trainFeatureFile = NULL;
 char* trainLabelFile = NULL;
 char* testFeatureFile = NULL;
@@ -78,14 +79,11 @@ int main(int argc, char** argv){
 	int mtest; // numFeatures of the test data
 	vector<struct SparseFeature> trainFeatures = readFeatureVectorSparse(trainFeatureFile, ntrain, mtrain);
 	Vector ytrain = readVector(trainLabelFile, ntrain);
-	if (startwith1)
-	{
-		ytrain = ytrain - 1;
-	}
 	vector<struct SparseFeature> testFeatures = readFeatureVectorSparse(testFeatureFile, ntest, mtest);
 	Vector ytest = readVector(testLabelFile, ntest);
 	if (startwith1)
 	{
+		ytrain = ytrain - 1;
 		ytest = ytest - 1;
 	}
 	cout << "Done reading the file, the size of the training set is " << ytrain.size() << " and the size of the test set is " <<ytest.size() << endl;

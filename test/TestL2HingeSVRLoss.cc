@@ -14,8 +14,8 @@ using namespace std;
 int main(int argc, char** argv){
 	// const char* featureFile = "../data/heart_scale.feat";
 	// const char* labelFile = "../data/heart_scale.label";
-	const char* featureFile = "../data/20newsgroup.feat";
-	const char* labelFile = "../data/20newsgroup.label";
+	char* featureFile = "../data/20newsgroup.feat";
+	char* labelFile = "../data/20newsgroup.label";
 	int n; // number of data items
 	int m; // numFeatures
 	vector<struct SparseFeature> features = readFeatureVectorSparse(featureFile, n, m);

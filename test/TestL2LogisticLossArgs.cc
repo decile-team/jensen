@@ -11,8 +11,8 @@
 #include "../src/jensen.h"
 using namespace jensen;
 using namespace std;
-const char* featureFile = NULL;
-const char* labelFile = NULL;
+char* featureFile = NULL;
+char* labelFile = NULL;
 int algtype = 0;
 double lambda = 1;
 char* outFile = NULL;

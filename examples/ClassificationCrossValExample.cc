@@ -11,7 +11,6 @@
 #include <string>
 #include <time.h>
 #include "../src/jensen.h"
-#include "argVariables.h"
 using namespace jensen;
 using namespace std;
 
@@ -25,6 +24,51 @@ double predictAccuracy(Classifiers<Feature>* c, vector<Feature>& testFeatures, V
 	}
 	return accuracy;
 }
+
+char* trainFeatureFile = NULL;
+char* trainLabelFile = NULL;
+char* testFeatureFile = NULL;
+char* testLabelFile = NULL;
+int method = 5;
+int nClasses = 2;
+double lambda = 1;
+char* outFile = NULL;
+int maxIter = 1000;
+int algtype = 0;
+double tau = 1e-4;
+double eps = 1e-2;
+int verb = 0;
+char* help = NULL;
+bool startwith1 = false;
+extern float percentTrain = 0.5;
+extern int kfold = 1;
+
+#define L1LR 1
+#define L2LR 2
+#define L1SSVM 3
+#define L2SSVM 4
+#define L2HSVM 5
+
+Arg Arg::Args[]={
+	Arg("trainFeatureFile", Arg::Req, trainFeatureFile, "the input training feature file",Arg::SINGLE),
+	Arg("trainLabelFile", Arg::Req, trainLabelFile, "the input training label file",Arg::SINGLE),
+	Arg("testFeatureFile", Arg::Req, testFeatureFile, "the input test feature file",Arg::SINGLE),
+	Arg("testLabelFile", Arg::Req, testLabelFile, "the input test label file",Arg::SINGLE),
+	Arg("nClasses", Arg::Opt, nClasses, "The number of classes", Arg::SINGLE),
+	Arg("method", Arg::Opt, method, "Training method: 1(L1LR), 2(L2LR), 3(L1SSVM), 4(L2SSVM), 5(L2HSVM)", Arg::SINGLE),
+	Arg("reg", Arg::Opt, lambda, "Regularization parameter (default 1)", Arg::SINGLE),
+	Arg("maxIter", Arg::Opt, maxIter, "Maximum number of iterations (default 250)", Arg::SINGLE),
+	Arg("epsilon", Arg::Opt, eps, "epsilon for convergence (default: 1e-2)", Arg::SINGLE),
+	Arg("algtype", Arg::Opt, algtype, "type of algorithm for training the corresponding method",Arg::SINGLE),
+	Arg("model", Arg::Opt, outFile, "saving the training model",Arg::SINGLE),
+	Arg("verb", Arg::Opt, verb, "verbosity",Arg::SINGLE),
+	Arg("help", Arg::Help, help, "Print this message"),
+	Arg("startwith1", Arg::Opt, startwith1, "Whether the Label file starts with one or zero"),
+	Arg()
+};
+
+string algs[] = {"L1 Logistic Regression", "L2 Logistic Regression", "L1 Smooth SVM",
+	         "L2 Smooth SVM", "L2 Hinge SVM"};
 
 int main(int argc, char** argv){
 	bool parse_was_ok = Arg::parse(argc,(char**)argv);
