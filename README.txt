@@ -64,3 +64,13 @@ Install and Build
 6) make
 
 Once you run make, it should automatically build the entire library. Once the library is built, please try out the example codes in the build directory.
+
+Testing the Convex Optimization Algorithms: To test the optimization algorithms please run the test executables:
+./TestL1LogisticLoss
+./TestL2LogisticLoss
+./TestL1SmoothSVMLoss
+./TestL2LeastSquaresLoss etc.
+
+You can also play around with the examples for testing classification and regression models. You can try them out as:
+./ClassificationExample -trainFeatureFile ../data/heart_scale.feat -trainLabelFile ../data/heart_scale.label -testFeatureFile ../data/heart_scale.feat -testLabelFile ../data/heart_scale.label 
+Optionally you can also play around with the method (L1LR, L2LR etc.), the algtype (LBFGS, TRON etc.), the regularization and so on.
