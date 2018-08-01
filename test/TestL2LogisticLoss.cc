@@ -2,9 +2,9 @@
 // Licensed under the Open Software License version 3.0
 // See COPYING or http://opensource.org/licenses/OSL-3.0
 /*
-	Author: Rishabh Iyer
+        Author: Rishabh Iyer
  *
-*/
+ */
 
 #include <iostream>
 #include <cstdlib>
@@ -59,7 +59,7 @@ int main(int argc, char** argv){
 	cin.get();
 	#endif
 	x = cg(ll, x0, 1, 1e-4, numEpochs);
-	
+
 	cout<<"*******************************************************************\n";
 	cout<<"L-BFGS for Logistic Loss, press enter to continue...\n";
 	#ifndef DEBUG

@@ -1,11 +1,11 @@
 // Copyright (c) 2007-2015 The LIBLINEAR Project.
 // Modified for use in Jensen by Rishabh Iyer
-// A coordinate descent algorithm for 
+// A coordinate descent algorithm for
 // L1-regularized logistic regression problems
 //
 //  min_w \sum |wj| + C \sum log(1+exp(-yi w^T xi)),
 //
-// Given: 
+// Given:
 // x, y, Cp, Cn
 // eps is the stopping tolerance
 //
@@ -24,14 +24,20 @@ using namespace std;
 #include "L1LRPrimal.h"
 
 namespace jensen {
-	
+
 #define INF HUGE_VAL
-template <class T> static inline void swap(T& x, T& y) { T t=x; x=y; y=t; }
+template <class T> static inline void swap(T& x, T& y) {
+	T t=x; x=y; y=t;
+}
 #ifndef min
-template <class T> static inline T min(T x,T y) { return (x<y)?x:y; }
+template <class T> static inline T min(T x,T y) {
+	return (x<y) ? x : y;
+}
 #endif
 #ifndef max
-template <class T> static inline T max(T x,T y) { return (x>y)?x:y; }
+template <class T> static inline T max(T x,T y) {
+	return (x>y) ? x : y;
+}
 #endif
 
 // transpose matrix X from row format to column format
@@ -42,14 +48,14 @@ static void transpose(const vector<SparseFeature>& features, vector<SparseFeatur
 	invfeatures = vector<SparseFeature>(m);
 	for(int i=0; i < n; i++)
 	{
-		for (int j = 0; j < features[i].featureIndex.size(); j++){
+		for (int j = 0; j < features[i].featureIndex.size(); j++) {
 			invfeatures[features[i].featureIndex[j]].featureIndex.push_back(i);
 			invfeatures[features[i].featureIndex[j]].featureVec.push_back(features[i].featureVec[j]);
 		}
 	}
 }
 
-  void L1LRPrimal(vector<SparseFeature>& features, Vector& y, Vector& x, double C, double eps, const int max_newton_iter,  const int verbosity){
+void L1LRPrimal(vector<SparseFeature>& features, Vector& y, Vector& x, double C, double eps, const int max_newton_iter,  const int verbosity){
 	vector<SparseFeature> invfeatures;
 	transpose(features, invfeatures);
 	int n = features.size();
@@ -322,7 +328,7 @@ static void transpose(const vector<SparseFeature>& features, vector<SparseFeatur
 				}
 				delta *= 0.5;
 				negsum_xTd *= 0.5;
-				for(int i=0; i<n ; i++)
+				for(int i=0; i<n; i++)
 					xTd[i] *= 0.5;
 			}
 		}
@@ -372,7 +378,7 @@ static void transpose(const vector<SparseFeature>& features, vector<SparseFeatur
 		// printf("Objective value = %lf\n", v/C);
 		// printf("#nonzeros/#features = %d/%d\n", nnz, n);
 		if (verbosity > 0)
-		  printf("numIter: %d, #CD cycles: %d, ObjVal: %e, #nonzeros/#features: %d/%d\n", newton_iter, iter, v/C, nnz,n);
+			printf("numIter: %d, #CD cycles: %d, ObjVal: %e, #nonzeros/#features: %d/%d\n", newton_iter, iter, v/C, nnz,n);
 	}
 
 	double v = 0;
@@ -390,7 +396,7 @@ static void transpose(const vector<SparseFeature>& features, vector<SparseFeatur
 			v += C*log(1+exp_wTx[j]);
 
 	if (verbosity > 0)
-	  printf("numIter: %d, #CD cycles: %d, ObjVal: %e, #nonzeros/#features: %d/%d\n", newton_iter, iter, v/C, nnz,n);
+		printf("numIter: %d, #CD cycles: %d, ObjVal: %e, #nonzeros/#features: %d/%d\n", newton_iter, iter, v/C, nnz,n);
 	// printf("Objective value = %lf\n", v/C);
 	// printf("#nonzeros/#features = %d/%d\n", nnz, n);
 	printf("=========================\n");
@@ -399,7 +405,7 @@ static void transpose(const vector<SparseFeature>& features, vector<SparseFeatur
 		printf("WARNING: reaching max number of iterations\n");
 
 	// calculate objective value
-	
+
 }
-		
+
 }

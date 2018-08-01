@@ -2,9 +2,9 @@
 // Licensed under the Open Software License version 3.0
 // See COPYING or http://opensource.org/licenses/OSL-3.0
 /*
-	Author: Rishabh Iyer
+        Author: Rishabh Iyer
  *
-*/
+ */
 
 #include <iostream>
 #include "../src/jensen.h"
@@ -12,7 +12,7 @@ using namespace jensen;
 using namespace std;
 
 int main(int argc, char** argv){
-  // const char* featureFile = "../data/heart_scale.feat";
+	// const char* featureFile = "../data/heart_scale.feat";
 	// const char* labelFile = "../data/heart_scale.label";
 	const char* featureFile = "../data/20newsgroup.feat";
 	const char* labelFile = "../data/20newsgroup.label";

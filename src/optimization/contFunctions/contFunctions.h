@@ -24,16 +24,16 @@
 
 
 /*
-#include "SumContinuousFunctions.h"
-#include "SimpleFunctions.h"
-#include "LogisticLoss.h"
-#include "SmoothSVMLoss.h"
-#include "SmoothSVRLoss.h"
-#include "HuberSVMLoss.h"
-#include "LeastSquaresLoss.h"
-#include "ProbitLoss.h"
-#include "HingeSVMLoss.h"
-#include "HingeSVRLoss.h"
-#include "L2.h"
-#include "L1.h"
-*/
+ #include "SumContinuousFunctions.h"
+ #include "SimpleFunctions.h"
+ #include "LogisticLoss.h"
+ #include "SmoothSVMLoss.h"
+ #include "SmoothSVRLoss.h"
+ #include "HuberSVMLoss.h"
+ #include "LeastSquaresLoss.h"
+ #include "ProbitLoss.h"
+ #include "HingeSVMLoss.h"
+ #include "HingeSVRLoss.h"
+ #include "L2.h"
+ #include "L1.h"
+ */

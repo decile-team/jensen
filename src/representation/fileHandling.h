@@ -1,6 +1,6 @@
 /*
  *	Utility code for file handling of various functions
-	Implemented originally by Hui Lin, modified by Yuzong Liu and Kai Wei. Made more general by Rishabh Iyer.
+        Implemented originally by Hui Lin, modified by Yuzong Liu and Kai Wei. Made more general by Rishabh Iyer.
  *
  */
 #include "SparseGraph.h"

@@ -2,27 +2,27 @@
 // Licensed under the Open Software License version 3.0
 // See COPYING or http://opensource.org/licenses/OSL-3.0
 /*
- *	L1 Regularized Smooth (L2) SVM Classifier. 
-	Author: Rishabh Iyer
+ *	L1 Regularized Smooth (L2) SVM Classifier.
+        Author: Rishabh Iyer
 
-    algtype: type of algorithm: 
-		0 (LBFGS-OWL)
-	 	1 (LBFGS)
-		2 (Gradient Descent)
-		3 (Stochastic Gradient Descent, Dual Averaging)
-		4 (Adaptive Gradient Descent, Dual Averaging)
-		5 (Gradient Descent with Line Search), 
-		6 (Gradient Descent with Barzelie Borwein step size), 
-		7 (Nesterov's optimal method), 
-		8 (Conjugate Gradient),  
-		9 (Stochastic Gradient Descent with fixed step length)
-		10 (Stochastic Gradient Descent with decaying step size)
-		11 (Adaptive Gradient Algorithm (AdaGrad))
+    algtype: type of algorithm:
+                0 (LBFGS-OWL)
+                1 (LBFGS)
+                2 (Gradient Descent)
+                3 (Stochastic Gradient Descent, Dual Averaging)
+                4 (Adaptive Gradient Descent, Dual Averaging)
+                5 (Gradient Descent with Line Search),
+                6 (Gradient Descent with Barzelie Borwein step size),
+                7 (Nesterov's optimal method),
+                8 (Conjugate Gradient),
+                9 (Stochastic Gradient Descent with fixed step length)
+                10 (Stochastic Gradient Descent with decaying step size)
+                11 (Adaptive Gradient Algorithm (AdaGrad))
 
  *
-*/
+ */
 
-#include<iostream>
+#include <iostream>
 using namespace std;
 
 #include "L1SmoothSVM.h"
@@ -35,102 +35,105 @@ using namespace std;
 
 #define EPSILON 1e-6
 namespace jensen {
-	template <class Feature>
-	L1SmoothSVM<Feature>::L1SmoothSVM(vector<Feature>& trainFeatures, Vector& y, int m, int n, int nClasses, 
-		double lambda, int algtype, int maxIter, double eps, int miniBatch, int lbfgsMemory): Classifiers<Feature>(m, n), 
-		trainFeatures(trainFeatures), y(y), nClasses(nClasses),
-	lambda(lambda), algtype(algtype), maxIter(maxIter), eps(eps), miniBatch(miniBatch), lbfgsMemory(lbfgsMemory) {}
+template <class Feature>
+L1SmoothSVM<Feature>::L1SmoothSVM(vector<Feature>& trainFeatures, Vector& y, int m, int n, int nClasses,
+                                  double lambda, int algtype, int maxIter, double eps, int miniBatch, int lbfgsMemory) : Classifiers<Feature>(m, n),
+	trainFeatures(trainFeatures), y(y), nClasses(nClasses),
+	lambda(lambda), algtype(algtype), maxIter(maxIter), eps(eps), miniBatch(miniBatch), lbfgsMemory(lbfgsMemory) {
+}
 
-	template <class Feature>
-	L1SmoothSVM<Feature>::L1SmoothSVM(const L1SmoothSVM<Feature>& c) : Classifiers<Feature>(c.m, c.n),
+template <class Feature>
+L1SmoothSVM<Feature>::L1SmoothSVM(const L1SmoothSVM<Feature>& c) : Classifiers<Feature>(c.m, c.n),
 	trainFeatures(c.trainFeatures), y(c.y), nClasses(c.nClasses), lambda(c.lambda), algtype(c.algtype),
-	maxIter(c.maxIter), eps(c.eps), miniBatch(c.miniBatch), lbfgsMemory(c.lbfgsMemory){}
+	maxIter(c.maxIter), eps(c.eps), miniBatch(c.miniBatch), lbfgsMemory(c.lbfgsMemory){
+}
 
-	template <class Feature>
-	L1SmoothSVM<Feature>::~L1SmoothSVM(){}
-  		
-	template <class Feature>
-	void L1SmoothSVM<Feature>::train(){ // train L1 regularized logistic regression
-		if (nClasses == 2){		
-			trainOne(y, w);
-		}
-		else{
-			vector<Set> yMapping = vector<Set>(nClasses); // a reverse mapping for indices of a particular label
-			for (int i = 0; i < n; i++)
-				yMapping[y[i]].insert(i);
-			wMany = vector<Vector>(nClasses, Vector(m));
-			for (int i = 0; i < nClasses; i++)
-			{
-				Vector yOne(n, -1);
-				for (Set::iterator it = yMapping[i].begin(); it != yMapping[i].end(); it++)
-					yOne[*it] = 1;
-				trainOne(yOne, wMany[i]);
-			}
+template <class Feature>
+L1SmoothSVM<Feature>::~L1SmoothSVM(){
+}
+
+template <class Feature>
+void L1SmoothSVM<Feature>::train(){         // train L1 regularized logistic regression
+	if (nClasses == 2) {
+		trainOne(y, w);
+	}
+	else{
+		vector<Set> yMapping = vector<Set>(nClasses);         // a reverse mapping for indices of a particular label
+		for (int i = 0; i < n; i++)
+			yMapping[y[i]].insert(i);
+		wMany = vector<Vector>(nClasses, Vector(m));
+		for (int i = 0; i < nClasses; i++)
+		{
+			Vector yOne(n, -1);
+			for (Set::iterator it = yMapping[i].begin(); it != yMapping[i].end(); it++)
+				yOne[*it] = 1;
+			trainOne(yOne, wMany[i]);
 		}
 	}
-	
-	template <class Feature> 
-	void L1SmoothSVM<Feature>::trainOne(Vector& yOne, Vector& wcurr){
+}
+
+template <class Feature>
+void L1SmoothSVM<Feature>::trainOne(Vector& yOne, Vector& wcurr){
 	L1SmoothSVMLoss<Feature> ll(m, trainFeatures, yOne, lambda);
 	L1SmoothSVMLoss<Feature>l(m, trainFeatures, yOne, 0);
-	
-	if (algtype == 0){
+
+	if (algtype == 0) {
 		cout<<"*******************************************************************\n";
 		cout<<"Training with LBFGS-OWL...\n";
 		wcurr = lbfgsMinOwl(ll, Vector(m, 0), 1, 1e-4, maxIter, lbfgsMemory, eps);
-	}		
-	else if (algtype == 1){
+	}
+	else if (algtype == 1) {
 		cout<<"*******************************************************************\n";
 		cout<<"Training with LBFGS...\n";
 		wcurr = lbfgsMin(ll, Vector(m, 0), 1, 1e-4, maxIter, lbfgsMemory, eps);
 	}
-	else if (algtype == 2){
+	else if (algtype == 2) {
 		cout<<"*******************************************************************\n";
 		cout<<"Training with Gradient Descent with fixed step size...\n";
 		wcurr = gd(ll, Vector(m, 0), 1e-5, maxIter, eps);
 	}
-	else if (algtype == 3){
+	else if (algtype == 3) {
 		cout<<"*******************************************************************\n";
 		cout<<"Training with Stochastic Gradient Descent and Dual Averaging...\n";
 		wcurr = sgdRegularizedDualAveraging(ll, l, Vector(m, 0), n, 1e-1, lambda, miniBatch, eps, maxIter, 0.5);
 	}
-	else if (algtype == 4){
+	else if (algtype == 4) {
 		cout<<"*******************************************************************\n";
 		cout<<"Training with Adaptive Gradient Descent and Dual Averaging...\n";
 		wcurr = sgdRegularizedDualAveraging(ll, l, Vector(m, 0), n, 1e-1, lambda, miniBatch, eps, maxIter);
 	}
-	else if (algtype == 5){
+	else if (algtype == 5) {
 		cout<<"*******************************************************************\n";
 		cout<<"Training with Gradient Descent with Line Search...\n";
 		wcurr = gdLineSearch(ll, Vector(m, 0), 1, 1e-5, maxIter, eps);
 	}
-	else if (algtype == 6){
+	else if (algtype == 6) {
 		cout<<"*******************************************************************\n";
 		cout<<"Training with Gradient Descent with Barzilia-Borwein Step Length\n";
 		wcurr = gdBarzilaiBorwein(ll, Vector(m, 0), 1, 1e-5, maxIter, eps);
 	}
 	// gradientDescentBB(ss, Vector(m, 0), 1, 1e-4, 250);
-	else if (algtype == 7){
+	else if (algtype == 7) {
 		cout<<"*******************************************************************\n";
 		cout<<"Training with Conjugate Gradient...\n";
 		wcurr = cg(ll, Vector(m, 0), 1, 1e-5, maxIter, eps);
-	}	
-	else if (algtype == 8){
+	}
+	else if (algtype == 8) {
 		cout<<"*******************************************************************\n";
 		cout<<"Training with Nesterov's Method\n";
 		wcurr = gdNesterov(ll, Vector(m, 0), 1, 1e-5, maxIter, eps);
 	}
-	else if (algtype == 9){
+	else if (algtype == 9) {
 		cout<<"*******************************************************************\n";
 		cout<<"Training with Stochastic Gradient Descent\n";
 		wcurr = sgd(ll, Vector(m, 0), n, 1e-4, miniBatch, eps, maxIter);
 	}
-	else if (algtype == 10){
+	else if (algtype == 10) {
 		cout<<"*******************************************************************\n";
 		cout<<"Training with Stochastic Gradient Descent with decaying learning rate\n";
 		wcurr = sgdDecayingLearningRate(ll, Vector(m, 0), n, 0.5*1e-1, miniBatch, eps, maxIter);
 	}
-	else if (algtype == 11){
+	else if (algtype == 11) {
 		cout<<"*******************************************************************\n";
 		cout<<"Training with Adaptive Gradient Algorithm\n";
 		wcurr = sgdAdagrad(ll, Vector(m, 0), n, 1e-2, miniBatch, eps, maxIter);
@@ -148,7 +151,7 @@ int L1SmoothSVM<Feature>::saveModel(char* model){
 	fprintf(fp, "nFeatures %d\n", m);
 	fprintf(fp, "n %d\n", n);
 	fprintf(fp, "w\n");
-	if (nClasses == 2){
+	if (nClasses == 2) {
 		for(int i=0; i<w.size(); i++)
 		{
 			fprintf(fp, "%.16g ", w[i]);
@@ -156,17 +159,17 @@ int L1SmoothSVM<Feature>::saveModel(char* model){
 		fprintf(fp, "\n");
 	}
 	else{
-		for (int i = 0; i < nClasses; i++){
-			for (int j = 0; j < m; j++){
+		for (int i = 0; i < nClasses; i++) {
+			for (int j = 0; j < m; j++) {
 				fprintf(fp, "%.16g ", wMany[i][j]);
 			}
 		}
-		fprintf(fp, "\n");	
+		fprintf(fp, "\n");
 	}
 
 	if (ferror(fp) != 0 || fclose(fp) != 0) return -1;
 	else return 0;
-} 
+}
 
 //brief: Load an already saved model of the classifier
 template <class Feature>
@@ -197,15 +200,15 @@ int L1SmoothSVM<Feature>::loadModel(char* model){
 		}
 	}
 
-	if(nClasses==2){
+	if(nClasses==2) {
 		w = Vector(m, 0);
 		for (int i = 0; i < m; i++)
 			fscanf(fp, "%lf ", w[i]);
 	}
 	else{
 		wMany = vector<Vector>(nClasses, Vector());
-		for (int i = 0; i < nClasses; i++){
-			for (int j = 0; j < m; j++){
+		for (int i = 0; i < nClasses; i++) {
+			for (int j = 0; j < m; j++) {
 				fscanf(fp, "%lf ", wMany[i][j]);
 			}
 		}
@@ -218,7 +221,7 @@ int L1SmoothSVM<Feature>::loadModel(char* model){
 template <class Feature>
 double L1SmoothSVM<Feature>::predict(const Feature& testFeature, double& val){
 	// the assumption here is that train and test datasets have the same number of features
-	if (nClasses == 2){
+	if (nClasses == 2) {
 		val = featureProductCheck(w, testFeature);
 		double argval = 0;
 		if (val > 0)
@@ -230,20 +233,20 @@ double L1SmoothSVM<Feature>::predict(const Feature& testFeature, double& val){
 	else{
 		val = -1e30;
 		double argval = 0;
-		for (int j = 0; j < nClasses; j++){
-			if (featureProductCheck(wMany[j], testFeature) > val){
+		for (int j = 0; j < nClasses; j++) {
+			if (featureProductCheck(wMany[j], testFeature) > val) {
 				val = featureProductCheck(wMany[j], testFeature);
 				argval = j;
 			}
 		}
 		return argval;
-	}	
+	}
 }
 
 template <class Feature>
 double L1SmoothSVM<Feature>::predict(const Feature& testFeature){
 	// the assumption here is that train and test datasets have the same number of features
-	if (nClasses == 2){
+	if (nClasses == 2) {
 		double val = featureProductCheck(w, testFeature);
 		double argval = 0;
 		if (val > 0)
@@ -255,31 +258,31 @@ double L1SmoothSVM<Feature>::predict(const Feature& testFeature){
 	else{
 		double val = -1e30;
 		double argval = 0;
-		for (int j = 0; j < nClasses; j++){
-			if (featureProductCheck(wMany[j], testFeature) > val){
+		for (int j = 0; j < nClasses; j++) {
+			if (featureProductCheck(wMany[j], testFeature) > val) {
 				val = featureProductCheck(wMany[j], testFeature);
 				argval = j;
 			}
 		}
 		return argval;
 	}
-}	
+}
 
-// prob is a vector. The assumption is that prob[0] corresponds to -1 and prob[1] corresponds to +1 in binary 
+// prob is a vector. The assumption is that prob[0] corresponds to -1 and prob[1] corresponds to +1 in binary
 // classification.
 template <class Feature>
 void L1SmoothSVM<Feature>::predictProbability(const Feature& testFeature, Vector& prob){
 	// the assumption here is that train and test datasets have the same number of features
 	prob = Vector(nClasses, 0);
 	double val;
-	if (nClasses == 2){
+	if (nClasses == 2) {
 		val = featureProductCheck(w, testFeature);
 		prob[1] = 1/(1+exp(-val));
 		prob[0] = 1 - prob[1];
 	}
 	else{
 		double sum = 0;
-		for (int j = 0; j < nClasses; j++){
+		for (int j = 0; j < nClasses; j++) {
 			val = featureProductCheck(wMany[j], testFeature);
 			prob[j] = 1/(1 + exp(-val));
 			sum += prob[j];
@@ -288,10 +291,10 @@ void L1SmoothSVM<Feature>::predictProbability(const Feature& testFeature, Vector
 			prob[j] = prob[j]/sum;
 	}
 	return;
-}		 	
-	 	
-  template class L1SmoothSVM<SparseFeature>;
-  template class L1SmoothSVM<DenseFeature>;
-		
-		 	
+}
+
+template class L1SmoothSVM<SparseFeature>;
+template class L1SmoothSVM<DenseFeature>;
+
+
 }
