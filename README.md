@@ -16,14 +16,13 @@ See COPYING or http://opensource.org/licenses/OSL-3.0
 
 1) Convex Function API
  - Base class for convex optimization
- - List of Convex Functions Implemented: 
-   `L1LogistocLoss` and `L2LogistocLoss`, 
-   `L1SmoothSVMLoss` and `L2SmoothSVMLoss`, 
-   `L1HingeSVMLoss` and `L2HingeSVMLoss`, 
-   `L1ProbitLossLoss` and `L2ProbitLoss`, 
-   `L1HuberSVMLoss` and `L2HuberSVMLoss`, 
-   `L1SmoothSVRLoss` and `L2SmoothSVRLoss`, 
-   `L1HingeSVMLoss` and `L2HingeSVMLoss`
+ - `L1LogistocLoss` and `L2LogistocLoss`, 
+ - `L1SmoothSVMLoss` and `L2SmoothSVMLoss`, 
+ - `L1HingeSVMLoss` and `L2HingeSVMLoss`, 
+ - `L1ProbitLossLoss` and `L2ProbitLoss`, 
+ - `L1HuberSVMLoss` and `L2HuberSVMLoss`, 
+ - `L1SmoothSVRLoss` and `L2SmoothSVRLoss`, 
+ - `L1HingeSVMLoss` and `L2HingeSVMLoss`
 
 2) Convex Optimization Algorithms API
  - `Trust Region Newton` (TRON)
