@@ -1,19 +1,18 @@
+# Jensen
+Jensen: A toolkit with API support for Convex Optimization and Machine Learning
+For further documentation, please see https://arxiv.org/abs/1807.06574
+
+## License
 Copyright (C) Rishabh Iyer, John T. Halloran, and Kai Wei
 Licensed under the Open Software License version 3.0
 See COPYING or http://opensource.org/licenses/OSL-3.0
 
------------------ README ------------------------
-
-Jensen: A toolkit with API support for Convex Optimization and Machine Learning
-
-For further documentation, please see https://arxiv.org/abs/1807.06574
-
-Contributors:
+## Contributors:
 - Rishabh Iyer
 - John Halloran
 - Kai Wei
 
-Features Supported
+## Features Supported
 
 1) Convex Function API
  - Base class for convex optimization
@@ -55,7 +54,7 @@ Features Supported
  - L2 Smooth SVRs
  - L2 Hinge SVRs
  
-Install and Build
+## Install and Build
 1) Install CMake
 2) Go to the main directory of jensen
 3) mkdir build
@@ -65,7 +64,8 @@ Install and Build
 
 Once you run make, it should automatically build the entire library. Once the library is built, please try out the example codes in the build directory.
 
-Testing the Convex Optimization Algorithms: To test the optimization algorithms please run the test executables:
+## Testing the Convex Optimization Algorithms
+To test the optimization algorithms please run the test executables:
 ./TestL1LogisticLoss
 ./TestL2LogisticLoss
 ./TestL1SmoothSVMLoss
