@@ -248,7 +248,7 @@ void outerProduct(const Vector& x, const Vector& y, Matrix& m)
 		for (int j = 0; j < y.size(); j++) {
 			v[j] = x[i]*y[j];
 		}
-		//m.push_back(v);
+		m.push_back(v);
 	}
 	return;
 }
