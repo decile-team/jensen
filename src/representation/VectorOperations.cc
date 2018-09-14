@@ -248,7 +248,7 @@ void outerProduct(const Vector& x, const Vector& y, Matrix& m)
 		for (int j = 0; j < y.size(); j++) {
 			v[j] = x[i]*y[j];
 		}
-		m.push_back(v);
+		//m.push_back(v);
 	}
 	return;
 }
@@ -268,6 +268,19 @@ void multiplyAccumulate(Vector& x, const double alpha, const Vector& g){
 	for (int i = 0; i < x.size(); i++) {
 		x[i] -= alpha*g[i];
 	}
+}
+
+int argMax(Vector& x) {
+    double maxVal = 0.0;
+    int maxIndex = -1;
+
+    for (int i = 0; i < x.size(); i++) {
+        if (maxVal < x[i]) {
+            maxVal = x[i];
+            maxIndex = i;
+        }
+    }
+    return maxIndex;
 }
 
 double norm(const Vector& x, const int type)
