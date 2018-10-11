@@ -270,6 +270,19 @@ void multiplyAccumulate(Vector& x, const double alpha, const Vector& g){
 	}
 }
 
+int argMax(Vector& x) {
+    double maxVal = 0.0;
+    int maxIndex = -1;
+
+    for (int i = 0; i < x.size(); i++) {
+        if (maxVal < x[i]) {
+            maxVal = x[i];
+            maxIndex = i;
+        }
+    }
+    return maxIndex;
+}
+
 double norm(const Vector& x, const int type)
 {
 	double val = 0;

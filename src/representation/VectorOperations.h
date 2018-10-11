@@ -39,6 +39,7 @@ double featureProduct(const Vector& x, const DenseFeature& f);
 double featureProductCheck(const Vector& x, const SparseFeature& f);
 double featureProductCheck(const Vector& x, const DenseFeature& f);
 void outerProduct(const Vector& x, const Vector& y, Matrix& m);
+int argMax(Vector& x);
 double norm(const Vector& x, const int type = 2);               // default is l_2 norm
 void print(const Vector& x);
 Vector abs(const Vector& x);
