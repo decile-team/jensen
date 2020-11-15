@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <iostream>
 #include <string.h>
+#include <time.h>
 #include <fstream>
 #include <sstream>
 #include <stdexcept>

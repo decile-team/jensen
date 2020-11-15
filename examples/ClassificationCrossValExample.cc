@@ -34,6 +34,7 @@ int nClasses = 2;
 double lambda = 1;
 char* outFile = NULL;
 int maxIter = 1000;
+int reg_type = 0;
 int algtype = 0;
 double tau = 1e-4;
 double eps = 1e-2;
@@ -113,11 +114,13 @@ int main(int argc, char** argv){
 		Classifiers<SparseFeature>* c;
 
 		if (method == L1LR) {
-			c = new L1LogisticRegression<SparseFeature>(trainFeatures, ytrain, mtrain, ntrain, nClasses,
-			                                            lambda, algtype, maxIter, eps);
+			reg_type = 0;
+			c = new LogisticRegression<SparseFeature>(trainFeatures, ytrain, mtrain, ntrain, nClasses,
+			                                            lambda, algtype, reg_type, maxIter, eps);
 		} else if (method == L2LR) {
-			c = new L2LogisticRegression<SparseFeature>(trainFeatures, ytrain, mtrain, ntrain, nClasses,
-			                                            lambda, algtype, maxIter, eps);
+			reg_type= 1;
+			c = new LogisticRegression<SparseFeature>(trainFeatures, ytrain, mtrain, ntrain, nClasses,
+			                                            lambda, algtype, reg_type, maxIter, eps);
 		} else if (method == L1SSVM) {
 			c = new L1SmoothSVM<SparseFeature>(trainFeatures, ytrain, mtrain, ntrain, nClasses,
 			                                   lambda, algtype, maxIter, eps);

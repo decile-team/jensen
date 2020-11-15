@@ -48,8 +48,7 @@ add_library(jensen
 	src/optimization/contAlgorithms/specialized/SVRDual.cc
 # classifiers
 	src/machinelearning/Classifiers.cc
-	src/machinelearning/logisticRegression/L1LogisticRegression.cc
-	src/machinelearning/logisticRegression/L2LogisticRegression.cc
+	src/machinelearning/logisticRegression/LogisticRegression.cc
 	src/machinelearning/SVM/L1SmoothSVM.cc
 	src/machinelearning/SVM/L2SmoothSVM.cc
 	src/machinelearning/SVM/L2HingeSVM.cc
