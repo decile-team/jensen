@@ -21,6 +21,7 @@ double lambda = 1;
 char* outFile = NULL;
 int maxIter = 250;
 int algtype = 0;
+int reg_type = 0;
 double tau = 1e-4;
 double eps = 1e-2;
 int verb = 0;
@@ -87,8 +88,9 @@ int main(int argc, char** argv){
 	cout << trainFeatures[1].featureVec[1] << " " << trainFeatures[1].featureIndex[1] << "\n";
 	double accuracy = 0;
 	if (method == L1LR) {
-		Classifiers<SparseFeature>* c = new L1LogisticRegression<SparseFeature>(trainFeatures, ytrain, mtrain, ntrain, nClasses,
-		                                                                        lambda, algtype, maxIter, eps);
+		reg_type = 0;
+		Classifiers<SparseFeature>* c = new LogisticRegression<SparseFeature>(trainFeatures, ytrain, mtrain, ntrain, nClasses,
+		                                                                        lambda, algtype, reg_type, maxIter, eps);
 		c->train();
 #ifdef TEST
 		cout << "Done with Training ... now testing\n";
@@ -97,8 +99,9 @@ int main(int argc, char** argv){
 		delete c;
 	}
 	else if (method == L2LR) {
-		Classifiers<SparseFeature>* c = new L2LogisticRegression<SparseFeature>(trainFeatures, ytrain, mtrain, ntrain, nClasses,
-		                                                                        lambda, algtype, maxIter, eps);
+		reg_type = 1;
+		Classifiers<SparseFeature>* c = new LogisticRegression<SparseFeature>(trainFeatures, ytrain, mtrain, ntrain, nClasses,
+		                                                                        lambda, algtype, reg_type, maxIter, eps);
 		c->train();
 #ifdef TEST
 		cout << "Done with Training ... now testing\n";
